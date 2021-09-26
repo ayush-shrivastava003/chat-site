@@ -10,12 +10,22 @@ function getDate() {
 }
 
 function logReq(req, res, next) {
-    fs.appendFile('logs.log', `${getDate()} @ ${Date.now()}: ${req.connection.remoteAddress} made a request for ${req.originalUrl}\n`, () =>{})
+    fs.appendFile(
+        'logs.log',
+        `${getDate()} @ ${Date.now()}: ${req.connection.remoteAddress} made a ${
+            req.method
+        } request for ${req.originalUrl}\n`,
+        () => {}
+    )
     next()
 }
 
 function logCustom(msg) {
-    fs.appendFile('logs.log', `${getDate()} @ ${Date.now()}: ${msg}\n`, () =>{})
+    fs.appendFile('logs.log', `${getDate()} @ ${Date.now()}: ${msg}\n`, () => {})
 }
 
-export {logCustom, logReq}
+function logErr(msg) {
+    fs.appendFile('logs.log', `ERROR: ${getDate()} @ ${Date.now()}: ${msg}\n`, () => {})
+}
+
+export {logCustom, logReq, logErr, getDate}
