@@ -4,21 +4,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sussy</title>
+    <title>Under Construction!</title>
 </head>
 <body>
     Under Construction!
-    <input id="button" type="button" value="sldkjflksdjf">
+    <input id="entry" type="text" placeholder="send a message">
+    <% messages.map(message => { %>
+        <div class="message">
+            <h2><%= message.content %></h2>
+        </div>        
+    <% }) %>
 </body>
+<script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
 <script>
-    document.getElementById('button').addEventListener('click', async (event) => {
-        event.preventDefault()
-        let r = await fetch("/post/", {
-            method: 'POST',
-            headers: {'Content-type': 'application/json'},
-            body: JSON.stringify({msg: "me when"})
-        }).then((res) => res.json())
-        console.log(r)
+    const socket = io()
+
+    function append(content) {
+        let messageDiv = document.createElement("div")
+        let messageContent = document.createElement("h2")
+        messageContent.innerHTML = content
+        messageDiv.appendChild(messageContent)
+        document.body.appendChild(messageDiv)
+    }
+
+    window.addEventListener('keyup', (event) => {
+        let content = document.getElementById('entry')
+        if (event.keyCode == 13 && content.value != '') {
+            console.log("enter")
+            socket.emit("message", content.value)
+            append(content.value)
+            content.value = ''
+        }
+    })
+
+    socket.on("new", (msg) => {
+        append(msg.message.content)
     })
 </script>
 </html>
