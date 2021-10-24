@@ -6,6 +6,7 @@ import path from 'path'
 import {logReq, logCustom, logErr, getDate} from './logger.js'
 import verifyLogin from './login_checker.js'
 import MessageModel from './models/message_model.js'
+import RoomModel from './models/room_model.js'
 import http from 'http'
 import {Server} from 'socket.io'
 
@@ -27,6 +28,7 @@ mongoose.connect(
     }
 )
 
+
 const server = express()
 const HTTPServer = http.Server(server)
 const socket = new Server(HTTPServer)
@@ -46,18 +48,45 @@ socket.on("connection", (socket) => {
     })
 
     socket.on("message", async (msg) => {
-        let message = new MessageModel({content: msg})
+        let message = new MessageModel({content: msg.content})
         await message.save()
+
+        let room = await RoomModel.findById(msg.roomId)
+        room.messages.push(message._id)
+        await room.save()
 
         socket.broadcast.emit("new", {message: message})
     })
 })
 
-router.get('/', async (req, res) => {
-    let messages = await MessageModel.find().limit(25)
-    res.render('index', {messages: messages})
+server.get('/', async (req, res) => {
+    res.render('index')
 })
 
+router.get('/chats', async (req, res) => {
+    let rooms = await RoomModel.find()
+    res.render('home', {rooms: rooms})
+})
+
+router.get('/chats/:room', async (req, res) => {
+    let id = req.params.room
+    let room = await RoomModel.findById(id)
+
+    if (!room) {return res.render('404')}
+
+    let messages = []
+    await Promise.all(
+        room.messages.map(async messageId => {
+            let message = await MessageModel.findById(messageId)
+            messages.push(message)
+        })
+    )
+    res.render('room', {messages: messages})
+})
+
+router.get('*', (req, res) => {
+    res.render('404')
+})
 HTTPServer.listen(process.env.PORT, ()=> {
     console.log("Started HTTP server. Port:", process.env.PORT)
 })
