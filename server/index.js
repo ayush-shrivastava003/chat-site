@@ -9,6 +9,8 @@ import MessageModel from './models/message_model.js'
 import RoomModel from './models/room_model.js'
 import http from 'http'
 import {Server} from 'socket.io'
+import RoomRouter from './routes/room_router.js'
+import AccountRouter from './routes/account_router.js'
 
 dotenv.config()
 mongoose.connect(
@@ -32,14 +34,12 @@ mongoose.connect(
 const server = express()
 const HTTPServer = http.Server(server)
 const socket = new Server(HTTPServer)
-const router = express.Router();
 
 server.set('view engine', 'ejs')
 server.use('/assets', express.static(path.resolve() + '../assets'))
 server.use(cookieParser())
 server.use(express.json())
 server.use(logReq)
-server.use('/', router)
 
 socket.on("connection", (socket) => {
     console.log("accepted connection. id:", socket.id)
@@ -63,30 +63,13 @@ server.get('/', async (req, res) => {
     res.render('index')
 })
 
-router.get('/chats', async (req, res) => {
-    let rooms = await RoomModel.find()
-    res.render('home', {rooms: rooms})
-})
+server.use('/chats', RoomRouter)
+server.use('/account', AccountRouter)
 
-router.get('/chats/:room', async (req, res) => {
-    let id = req.params.room
-    let room = await RoomModel.findById(id)
-
-    if (!room) {return res.render('404')}
-
-    let messages = []
-    await Promise.all(
-        room.messages.map(async messageId => {
-            let message = await MessageModel.findById(messageId)
-            messages.push(message)
-        })
-    )
-    res.render('room', {messages: messages})
-})
-
-router.get('*', (req, res) => {
+server.get("*", async (req, res) => {
     res.render('404')
 })
+
 HTTPServer.listen(process.env.PORT, ()=> {
     console.log("Started HTTP server. Port:", process.env.PORT)
 })
