@@ -4,13 +4,14 @@ import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import path from 'path'
 import {logReq, logCustom, logErr, getDate} from './logger.js'
-import verifyLogin from './login_checker.js'
 import MessageModel from './models/message_model.js'
 import RoomModel from './models/room_model.js'
 import http from 'http'
 import {Server} from 'socket.io'
 import RoomRouter from './routes/room_router.js'
-import AccountRouter from './routes/account_router.js'
+import {AccountRouter} from './routes/account_router.js'
+import {dirname} from 'path'
+import {fileURLToPath} from 'url'
 
 dotenv.config()
 mongoose.connect(
@@ -34,9 +35,10 @@ mongoose.connect(
 const server = express()
 const HTTPServer = http.Server(server)
 const socket = new Server(HTTPServer)
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 server.set('view engine', 'ejs')
-server.use('/assets', express.static(path.resolve() + '../assets'))
+server.use('/assets', express.static(path.resolve(__dirname + '../../assets')))
 server.use(cookieParser())
 server.use(express.json())
 server.use(logReq)
@@ -72,4 +74,5 @@ server.get("*", async (req, res) => {
 
 HTTPServer.listen(process.env.PORT, ()=> {
     console.log("Started HTTP server. Port:", process.env.PORT)
+    logCustom("Started HTTP server. Port:", process.env.PORT)
 })

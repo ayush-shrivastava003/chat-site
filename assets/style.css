@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind&display=swap');
+
+:root {
+    --main-font: "Hind";
+    --main-color: rgb(42, 47, 77);
+    --font-color: white;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    } to {
+        opacity: 1
+    }
+}
+
+html {
+    font-family: var(--main-font);
+    color: var(--font-color);
+    background-color: var(--main-color);
+}
+
+#welcome {
+    position: relative;
+    animation: fadein 1.5s;
+    text-align: center;
+    /* transform: translateY(100%); */
+}
+
+#welcome h1 {
+    position: relative;
+    animation: fadein 1.5s;
+    text-align: center;
+    font-size: 60pt;
+}
+
+#welcome #text {
+    position: relative;
+    text-align: center;
+    transform: translateY(-400%);
+    /* color: var(--font-color) */
+}
+
+#text a {
+    color: var(--font-color)
+}
+
+#background {
+    position: relative;
+    animation: fadein 1.5s;
+    filter: /*(grayscale(50%) */brightness(75%);
+    width: 100%;
+    transform: scale(105%);
+}
+
+#more-info {
+    text-align: center;
+}
+
+#more-info h1 {
+    transform: translateY(-50%);
+}

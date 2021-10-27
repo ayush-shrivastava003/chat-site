@@ -1,8 +1,11 @@
 import express from 'express'
 import MessageModel from '../models/message_model.js'
 import RoomModel from '../models/room_model.js'
+import {verifyLogin} from './account_router.js'
 
 const RoomRouter = new express.Router()
+
+RoomRouter.use(verifyLogin) // only allow messaging to those who are logged in
 
 RoomRouter.get('/', async (req, res) => {
     let rooms = await RoomModel.find()
