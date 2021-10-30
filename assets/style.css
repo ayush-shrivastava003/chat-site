@@ -4,13 +4,25 @@
     --main-font: "Hind";
     --main-color: rgb(42, 47, 77);
     --font-color: white;
+    --secondary-color: #4D482A;
+    --secondary-color-highlight: #534e2f;
+}
+
+@keyframes fadein-slideup {
+    from {
+        opacity: 0;
+        top: 60%;
+    } to {
+        opacity: 1;
+        top: 30%;
+    }
 }
 
 @keyframes fadein {
     from {
         opacity: 0;
     } to {
-        opacity: 1
+        opacity: 1;
     }
 }
 
@@ -20,43 +32,73 @@ html {
     background-color: var(--main-color);
 }
 
-#welcome {
-    position: relative;
-    animation: fadein 1.5s;
-    text-align: center;
-    /* transform: translateY(100%); */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
 
-#welcome h1 {
-    position: relative;
-    animation: fadein 1.5s;
+#gaming {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: fadein-slideup 1.75s;
+    color: white;
     text-align: center;
+}
+
+#gaming h1 {
+    font-family: var(--main-font);
     font-size: 60pt;
 }
 
-#welcome #text {
-    position: relative;
-    text-align: center;
-    transform: translateY(-400%);
-    /* color: var(--font-color) */
-}
-
-#text a {
-    color: var(--font-color)
-}
+a {color: var(--font-color);}
 
 #background {
-    position: relative;
-    animation: fadein 1.5s;
-    filter: /*(grayscale(50%) */brightness(75%);
+    filter: brightness(75%);
+    padding: 0;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
     width: 100%;
-    transform: scale(105%);
 }
 
 #more-info {
+    padding-top: 1%;
     text-align: center;
 }
 
 #more-info h1 {
-    transform: translateY(-50%);
+    text-align: center
+}
+
+#login-title {
+    text-align: center;
+}
+
+#form-container {
+    display: block;
+    text-align: center;
+    animation: fadein 1s;
+}
+
+#form input {
+    margin-bottom: 0.5%;
+    font-family: var(--main-font);
+    border-radius: 5px;
+    border-style: none;
+    outline: none;
+}
+
+#form input[type="submit"] {
+    background-color: #4D482A;
+    color: var(--font-color);
+    transition: 0.2s;
+    width: 20;
+} 
+
+#form input[type="submit"]:hover {
+    background-color: #534e2f;
 }

@@ -7,9 +7,9 @@ const AccountRouter = new express.Router()
 
 async function verifyLogin(req, res, next) {
     let token = req.cookies.token
-    if (!token || 
-        !jwt.verify(token, process.env.JWT_SECRET) ||
-        !(await UserModel.exists({_id: JSON.parse(Buffer.from(token.split('.')[1], 'base64')).id}))
+    if (!token || // if token expired/never existed
+        !jwt.verify(token, process.env.JWT_SECRET) || // if token was tampered with or somehow failed verification
+        !(await UserModel.exists({_id: JSON.parse(Buffer.from(token.split('.')[1], 'base64')).id})) // if account was deleted
     ) return res.redirect('/account/register')
 
     next()

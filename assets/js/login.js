@@ -4,15 +4,20 @@ const form = document.getElementById('form')
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault()
-    let r = await fetch('/account/login', {
-    method: 'POST',
-    headers: {'Content-type': 'application/json'},
-    body: JSON.stringify({
-        username: username.value,
-        password: password.value
-        })
-    })
-
-    console.log(r.status)
-}
-)
+    
+    if (username.value != '' && password.value != '') {
+        let r = await fetch('/account/login', {
+            method: 'POST',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({
+                username: username.value,
+                password: password.value
+                })
+            })
+            if (r.status == 200) {
+                window.location.href = '/chats'
+            } else {
+                alert((await r.json()).error)
+            }
+    }
+})

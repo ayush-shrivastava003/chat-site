@@ -4,15 +4,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/style.css">
     <title>Document</title>
 </head>
 <body>
-    <h1>log in</h1>
-    <form id="form">
-        <input type="text" id="username" placeholder="Your username">
-        <input type="password" id="password" placeholder="Your password">
-        <input type="submit" id="submit" value="submit">
-    </form>
+    <div id="form-container">
+        <h1 id="login-title">log in</h1>
+        <form id="form">
+            <input type="text" id="username" placeholder="Your username">
+            <br>
+            <input type="password" id="password" placeholder="Your password">
+            <br>
+            <input type="submit" id="submit" value="submit">
+        </form>
+        <p>If you don't have an account, sign up <a href="/account/register">here</a>.</p>
+    </div>
 </body>
 <script src="../assets/js/login.js"></script>
 </html>
