@@ -51,7 +51,7 @@ html, body {
 
 #gaming h1 {
     font-family: var(--main-font);
-    font-size: 60pt;
+    font-size: 4.167vw;
 }
 
 a {color: var(--font-color);}
