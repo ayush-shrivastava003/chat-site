@@ -4,27 +4,53 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/style.css">
     <title>Under Construction!</title>
 </head>
 <body>
-    Under Construction!
-    <input id="entry" type="text" placeholder="send a message">
-    <% messages.map(message => { %>
-        <div class="message">
-            <h2><%= message.content %></h2>
-        </div>        
-    <% }) %>
+    Under Construction
+    <div id="message-container">
+        <% messages.map(msg => { %>
+            <div class="message">
+                <div class="author-date">
+                    <p><%= msg.author %></p>
+                    <p><%= msg.date %></p>
+                </div>
+                <p><%= msg.content %></p>
+            </div>
+        <% }) %>
+    </div>
+    <div id="entry-container">
+        <input id="entry" type="text" placeholder="send a message">
+    </div>
 </body>
 <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+<script src="../server/logger.js"></script>
 <script>
     const socket = io()
 
+    function getDate() {
+        let d = new Date()
+        let day = d.getDate()
+        let month = d.getMonth() + 1
+        let year = d.getFullYear()
+
+        return `${month}/${day}/${year}`
+    }
+
     function append(content) {
         let messageDiv = document.createElement("div")
-        let messageContent = document.createElement("h2")
+        let messageContent = document.createElement("p")
+        let authorDate = document.createElement("div")
+        let divContainer = document.getElementById("message-container")
+        let authorText = document.cookie.split(';')[0].split("=")[1]
+
         messageContent.innerHTML = content
+        authorDate.className = "author-date"
+        authorDate.innerHTML = `<p>${authorText}</p> <p>${getDate()}</p>`
+        messageDiv.appendChild(authorDate)
         messageDiv.appendChild(messageContent)
-        document.body.appendChild(messageDiv)
+        divContainer.appendChild(messageDiv)
     }
 
     window.addEventListener('keyup', (event) => {

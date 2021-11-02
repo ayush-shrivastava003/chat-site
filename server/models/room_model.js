@@ -10,9 +10,22 @@ const roomSchema = new mongoose.Schema({
         ref: 'User'
     }],
     messages: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'Message'
-    }]
+            date: {
+            type: String,
+            required: true,
+        },
+            epochTime: {
+            type: Number,
+            required: true,
+        },
+            content: {
+            type: String,
+            required: true,
+        },
+            author: {
+                type: mongoose.Schema.ObjectId,
+                ref: 'User'
+    }}]
 })
 
 const RoomModel = mongoose.model('Room', roomSchema)

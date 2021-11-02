@@ -11,7 +11,7 @@
     <h1>Chats</h1>
     <% rooms.map(room => { %>
         <div class="room">
-            <a href="<%=room._id%>"><%= room.name %></h3>
+            <a href="/chats/<%=room._id%>"><%= room.name %></h3>
         </div>
     <% }) %>
 </body>

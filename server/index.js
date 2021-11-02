@@ -4,14 +4,15 @@ import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import path from 'path'
 import {logReq, logCustom, logErr, getDate} from './logger.js'
-import MessageModel from './models/message_model.js'
 import RoomModel from './models/room_model.js'
 import http from 'http'
 import {Server} from 'socket.io'
 import RoomRouter from './routes/room_router.js'
-import {AccountRouter} from './routes/account_router.js'
+import {AccountRouter, getToken} from './routes/account_router.js'
 import {dirname} from 'path'
 import {fileURLToPath} from 'url'
+import cookie from 'cookie'
+import UserModel from './models/user_model.js'
 
 dotenv.config()
 mongoose.connect(
@@ -50,14 +51,19 @@ socket.on("connection", (socket) => {
     })
 
     socket.on("message", async (msg) => {
-        let message = new MessageModel({content: msg.content})
-        await message.save()
+        // let message = new MessageModel({content: msg.content})
+        // await message.save()
 
         let room = await RoomModel.findById(msg.roomId)
-        room.messages.push(message._id)
+        room.messages.push({
+            date: getDate(),
+            epochTime: Date.now(),
+            content: msg.content,
+            author: getToken(cookie.parse(socket.handshake.headers.cookie).token)
+        })
         await room.save()
 
-        socket.broadcast.emit("new", {message: message})
+        socket.broadcast.emit("new", {message: msg})
     })
 })
 
