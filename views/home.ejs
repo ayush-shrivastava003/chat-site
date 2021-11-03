@@ -8,11 +8,13 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Chats</h1>
-    <% rooms.map(room => { %>
-        <div class="room">
-            <a href="/chats/<%=room._id%>"><%= room.name %></h3>
-        </div>
-    <% }) %>
+    <h1 id="chats-title">Chats</h1>
+    <div id='room-container'>
+        <% rooms.map(room => { %>
+            <div class="room">
+                <a href="/chats/<%=room._id%>"><%= room.name %></h3>
+            </div>
+        <% }) %>
+    </div>
 </body>
 </html>

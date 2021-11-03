@@ -27,6 +27,9 @@ mongoose.connect(
             throw err
         }
 
+        // let r = new RoomModel({name: '123123'})
+        // await r.save()
+
         console.log(`Connected to DB: ${process.env.DB}.`)
         logCustom(`Connected to DB: ${process.env.DB}.`)
     }

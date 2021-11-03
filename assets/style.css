@@ -6,6 +6,7 @@
     --font-color: white;
     --secondary-color: #4D482A;
     --secondary-color-highlight: #534e2f;
+    --dark-color: #1f1d12;
 }
 
 @keyframes fadein-slideup {
@@ -126,7 +127,25 @@ a {color: var(--font-color);}
     overflow: hidden scroll;
     height: 80%;
 }
-
+  
+  #message-container::-webkit-scrollbar {
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+  }
+  
+  #message-container::-webkit-scrollbar-thumb {
+    background-color: var(--dark-color);
+    border-radius: 10px;
+  }
 .author-date p {
     display: inline;
+}
+
+#room-container {
+    margin-left: 3%;
+}
+
+#chats-title {
+    margin-left: 2.5%;
+    margin-top: 5%;
 }

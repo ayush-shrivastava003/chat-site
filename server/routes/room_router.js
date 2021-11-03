@@ -24,7 +24,7 @@ RoomRouter.get('/:room', async (req, res) => {
         msgs[msgs.indexOf(msg)].author = author
     }))
 
-    res.render('room', {messages: msgs})
+    res.render('room', {messages: msgs, roomName: room.name})
 
 })
 
