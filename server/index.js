@@ -66,7 +66,7 @@ socket.on("connection", (socket) => {
         })
         await room.save()
 
-        socket.broadcast.emit("new", {message: msg})
+        socket.broadcast.emit("new", msg)
     })
 })
 

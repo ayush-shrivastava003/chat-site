@@ -37,7 +37,7 @@ window.addEventListener('keyup', (event) => {
 })
 
 socket.on("new", (msg) => {
-    append(msg.message.content, msg.author)
+    append(msg.content, msg.author)
     let msgContainer = document.getElementById("message-container")
     msgContainer.scrollTop = msgContainer.scrollHeight;
 })
