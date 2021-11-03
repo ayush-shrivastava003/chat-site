@@ -29,7 +29,7 @@ window.addEventListener('keyup', (event) => {
     let content = document.getElementById('entry')
     if (event.keyCode == 13 && content.value != '') {
         let roomId = window.location.href.split('/')[4]
-        socket.emit("message", {content: content.value, roomId: roomId})
+        socket.emit("message", {content: content.value, roomId: roomId, author: document.cookie.split(';')[0].split("=")[1]})
         append(content.value, document.cookie.split(';')[0].split("=")[1])
         content.value = ''
         msgContainer.scrollTop = msgContainer.scrollHeight;
