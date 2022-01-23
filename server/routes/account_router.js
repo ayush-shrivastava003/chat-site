@@ -10,13 +10,17 @@ function getToken(token) {
 }
 
 async function verifyLogin(req, res, next) {
-    let token = req.cookies.token
-    if (!token || // if token expired/never existed
-        !jwt.verify(token, process.env.JWT_SECRET) || // if token was tampered with or somehow failed verification
-        !(await UserModel.exists({_id: getToken(token)})) // if account was deleted
-    ) return res.redirect('/account/login')
+    let info = req.cookies.info
+    info = decodeURIComponent(info)
 
-    next()
+    if (info !== "undefined") {
+        let token = JSON.parse(info).token
+        if (!token || // if token expired/never existed
+            !jwt.verify(token, process.env.JWT_SECRET) || // if token was tampered with or somehow failed verification
+            !(await UserModel.exists({_id: getToken(token)})) // if account was deleted
+        ) return res.redirect('/account/login')
+        next()
+    } else {return res.redirect("account/login")}
 
 }
 
@@ -44,8 +48,7 @@ AccountRouter.post('/register', async (req, res) => {
         await user.save()
 
         let token = await jwt.sign({id: user._id}, process.env.JWT_SECRET)
-        res.cookie("username",  username)
-        return res.cookie('token', token).status(200).json({status: "ok"})
+        return res.cookie('info', JSON.stringify({username, token})).status(200).json({status: "ok"})
 
     } else {return res.status(400).json({error: 'Password should be at least 8 characters!'})}
 })
@@ -58,8 +61,7 @@ AccountRouter.post('/login', async (req, res) => {
 
     if (await bcrypt.compare(password, user.password)) {
         let token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
-        res.cookie("username", username)
-        return res.cookie('token', token).status(200).json({status: 'ok'})
+        return res.cookie('info', JSON.stringify({username, token})).status(200).json({status: 'ok'})
     } else return res.status(400).json({status: 'error', error: 'Invalid username or password'})
 })
 

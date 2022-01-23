@@ -7,7 +7,8 @@ const chatTitle = document.getElementById("chat-title")
 const entry = document.getElementById("entry")
 
 function getUser() {
-    return document.cookie.split(';')[0].split("=")[1]
+    let data = document.cookie.split(';')[0].split("=")[1]
+    return (JSON.parse(decodeURIComponent(data))).username
 }
 
 function getDate() {
@@ -46,7 +47,7 @@ entry.addEventListener('keyup', (event) => {
     if (event.keyCode == 13 && entry.value != '') {
         let roomId = window.location.href.split('/')[4]
         socket.emit("message", {content: entry.value, roomId: roomId, author: getUser()})
-        append(entry.value, document.cookie.split(';')[0].split("=")[1])
+        append(entry.value, getUser())
         entry.value = ''
         msgContainer.scrollTop = msgContainer.scrollHeight;
     } else {

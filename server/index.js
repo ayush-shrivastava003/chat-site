@@ -46,7 +46,7 @@ server.use(logReq)
 socket.on("connection", (socket) => {
     logCustom(`accepted connection from ${socket.handshake.address}`)
     socket.on("disconnect", () => {
-        console.log("lost connection") 
+        logCustom(`lost connection from ${socket.handshake.address}`)
     })
 
     socket.on("message", async (msg) => {
@@ -56,7 +56,7 @@ socket.on("connection", (socket) => {
             date: getDate(),
             epochTime: Date.now(),
             content: msg.content,
-            author: getToken(cookie.parse(socket.handshake.headers.cookie).token)
+            author: getToken(JSON.parse(cookie.parse(socket.handshake.headers.cookie).info).token)
         })
         await room.save()
 
