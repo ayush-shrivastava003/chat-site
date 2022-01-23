@@ -5,26 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/style.css">
-    <title>Under Construction!</title>
+    <link rel="icon" href="../assets/icon.png">
+    <title><%= roomName %> - chat-site</title>
 </head>
 <body>
-    Under Construction
+    <input type="text" id="chat-title" value="<%=roomName%>">
     <div id="message-container">
         <% messages.map(msg => { %>
             <div class="message">
                 <div class="author-date">
                     <p><%= msg.author %></p>
-                    <p><%= msg.date %></p>
+                    <p class="date"><%= msg.date %></p>
                 </div>
                 <p><%= msg.content %></p>
             </div>
         <% }) %>
     </div>
     <div id="entry-container">
+        <input type=file id="file-upload-hidden"style="display: none;">
+        <button id="file-upload">+</button>
         <input id="entry" type="text" placeholder="send a message to <%= roomName %>">
+        <p id="typing-label"> </p>
     </div>
 </body>
 <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+<script>
+    const roomId = "<%= roomId %>"
+</script>
 <script src="../assets/js/room.js"></script>
 </html>

@@ -1,7 +1,14 @@
 const socket = io()
-const converter = new showdown.Converter()
+// const converter = new showdown.Converter()
 let msgContainer = document.getElementById("message-container")
 msgContainer.scrollTop = msgContainer.scrollHeight;
+const typingLabel = document.getElementById("typing-label")
+const chatTitle = document.getElementById("chat-title")
+const entry = document.getElementById("entry")
+
+function getUser() {
+    return document.cookie.split(';')[0].split("=")[1]
+}
 
 function getDate() {
     let d = new Date()
@@ -25,19 +32,52 @@ function append(content, author) {
     msgContainer.appendChild(messageDiv)
 }
 
-window.addEventListener('keyup', (event) => {
-    let content = document.getElementById('entry')
-    if (event.keyCode == 13 && content.value != '') {
+function resize(keyCode) {
+    if (keyCode == 13 && chatTitle.value != '') {
+        socket.emit("room change", chatTitle.value, roomId)
+    } else {
+        chatTitle.style.width = chatTitle.value.length + "ch"
+    }
+}
+
+resize(13)
+
+entry.addEventListener('keyup', (event) => {
+    if (event.keyCode == 13 && entry.value != '') {
         let roomId = window.location.href.split('/')[4]
-        socket.emit("message", {content: content.value, roomId: roomId, author: document.cookie.split(';')[0].split("=")[1]})
+        socket.emit("message", {content: entry.value, roomId: roomId, author: getUser()})
         append(content.value, document.cookie.split(';')[0].split("=")[1])
-        content.value = ''
+        entry.value = ''
         msgContainer.scrollTop = msgContainer.scrollHeight;
+    } else {
+        setTimeout(() => {
+            socket.emit("stop typing")
+        }, 5000)
+        socket.emit("typing", getUser())
     }
 })
+
+
+document.getElementById("file-upload").addEventListener("click", () => {
+    document.getElementById("file-upload-hidden").click()
+})
+
+chatTitle.addEventListener("keyup", (event) => {resize(event.keyCode)})
 
 socket.on("new", (msg) => {
     append(msg.content, msg.author)
     let msgContainer = document.getElementById("message-container")
     msgContainer.scrollTop = msgContainer.scrollHeight;
+})
+
+socket.on("typing", (author) => {
+    typingLabel.innerHTML = `${author} is typing...`
+})
+
+socket.on("stop typing", () => {
+    typingLabel.innerHTML = ""
+})
+
+socket.on("room change", (name) => {
+    chatTitle.value = name
 })

@@ -2,6 +2,7 @@ import express from 'express'
 import UserModel from '../models/user_model.js'
 import RoomModel from '../models/room_model.js'
 import {verifyLogin} from './account_router.js'
+import mongoose from 'mongoose'
 
 const RoomRouter = new express.Router()
 
@@ -14,18 +15,18 @@ RoomRouter.get('/', async (req, res) => {
 
 RoomRouter.get('/:room', async (req, res) => {
     let id = req.params.room
-    let room = await RoomModel.findById(id).sort({epochTime: 1})
-
-    if (!room) {return res.render('404')}
-
-    let msgs = JSON.parse(JSON.stringify(room.messages)) // deep copy of room.messages
-    await Promise.all(msgs.map(async (msg) => {
-        let author = (await UserModel.findById(msg.author)).username
-        msgs[msgs.indexOf(msg)].author = author
-    }))
-
-    res.render('room', {messages: msgs, roomName: room.name})
-
+    if (mongoose.isValidObjectId(id)) {
+        let room = await RoomModel.findById(id).sort({epochTime: 1})
+        if (!room) {return res.render('404')}
+    
+        let msgs = JSON.parse(JSON.stringify(room.messages)) // deep copy of room.messages
+        await Promise.all(msgs.map(async (msg) => {
+            let author = (await UserModel.findById(msg.author)).username
+            msgs[msgs.indexOf(msg)].author = author
+        }))
+    
+        res.render('room', {messages: msgs, roomName: room.name, roomId: room._id})
+    } else {return res.render('404')}
 })
 
 export default RoomRouter

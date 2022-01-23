@@ -14,7 +14,7 @@ async function verifyLogin(req, res, next) {
     if (!token || // if token expired/never existed
         !jwt.verify(token, process.env.JWT_SECRET) || // if token was tampered with or somehow failed verification
         !(await UserModel.exists({_id: getToken(token)})) // if account was deleted
-    ) return res.redirect('/account/register')
+    ) return res.redirect('/account/login')
 
     next()
 

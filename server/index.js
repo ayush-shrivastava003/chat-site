@@ -12,7 +12,6 @@ import {AccountRouter, getToken} from './routes/account_router.js'
 import {dirname} from 'path'
 import {fileURLToPath} from 'url'
 import cookie from 'cookie'
-import UserModel from './models/user_model.js'
 
 dotenv.config()
 mongoose.connect(
@@ -26,9 +25,6 @@ mongoose.connect(
             logErr(err.message)
             throw err
         }
-
-        // let r = new RoomModel({name: '123123'})
-        // await r.save()
 
         console.log(`Connected to DB: ${process.env.DB}.`)
         logCustom(`Connected to DB: ${process.env.DB}.`)
@@ -48,14 +44,12 @@ server.use(express.json())
 server.use(logReq)
 
 socket.on("connection", (socket) => {
-    console.log("accepted connection. id:", socket.id)
+    logCustom(`accepted connection from ${socket.handshake.address}`)
     socket.on("disconnect", () => {
         console.log("lost connection") 
     })
 
     socket.on("message", async (msg) => {
-        // let message = new MessageModel({content: msg.content})
-        // await message.save()
 
         let room = await RoomModel.findById(msg.roomId)
         room.messages.push({
@@ -67,6 +61,21 @@ socket.on("connection", (socket) => {
         await room.save()
 
         socket.broadcast.emit("new", msg)
+    })
+
+    socket.on("typing", (author) => {
+        socket.broadcast.emit("typing", author)
+    })
+
+    socket.on("stop typing", () => {
+        socket.broadcast.emit("stop typing")
+    })
+
+    socket.on("room change", async (name, id) => {
+        let room = await RoomModel.findById(id)
+        room.name = name
+        await room.save()
+        socket.broadcast.emit("room change", name)
     })
 })
 
