@@ -26,7 +26,7 @@ function append(content, author) {
 
     messageContent.innerHTML = content
     authorDate.className = "author-date"
-    authorDate.innerHTML = `<p>${author}</p> <p>${getDate()}</p>`
+    authorDate.innerHTML = `<p>${author}</p> <p class="date">${getDate()}</p>`
     messageDiv.appendChild(authorDate)
     messageDiv.appendChild(messageContent)
     msgContainer.appendChild(messageDiv)
@@ -46,7 +46,7 @@ entry.addEventListener('keyup', (event) => {
     if (event.keyCode == 13 && entry.value != '') {
         let roomId = window.location.href.split('/')[4]
         socket.emit("message", {content: entry.value, roomId: roomId, author: getUser()})
-        append(content.value, document.cookie.split(';')[0].split("=")[1])
+        append(entry.value, document.cookie.split(';')[0].split("=")[1])
         entry.value = ''
         msgContainer.scrollTop = msgContainer.scrollHeight;
     } else {
