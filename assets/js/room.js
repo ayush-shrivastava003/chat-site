@@ -25,6 +25,7 @@ function append(content, author) {
     let messageContent = document.createElement("p")
     let authorDate = document.createElement("div")
 
+    messageDiv.className = "message"
     messageContent.innerHTML = content
     authorDate.className = "author-date"
     authorDate.innerHTML = `<p>${author}</p> <p class="date">${getDate()}</p>`
@@ -45,6 +46,10 @@ resize(13)
 
 entry.addEventListener('keyup', (event) => {
     if (event.keyCode == 13 && entry.value != '') {
+        if (entry.value.length > 2000) {
+            alert("message content is more than 2000 characters")
+            return
+        }
         let roomId = window.location.href.split('/')[4]
         socket.emit("message", {content: entry.value, roomId: roomId, author: getUser()})
         append(entry.value, getUser())
@@ -52,7 +57,7 @@ entry.addEventListener('keyup', (event) => {
         msgContainer.scrollTop = msgContainer.scrollHeight;
     } else {
         setTimeout(() => {
-            socket.emit("stop typing")
+            socket.emit("stop typing", getUser())
         }, 5000)
         socket.emit("typing", getUser())
     }
@@ -75,8 +80,8 @@ socket.on("typing", (author) => {
     typingLabel.innerHTML = `${author} is typing...`
 })
 
-socket.on("stop typing", () => {
-    typingLabel.innerHTML = ""
+socket.on("stop typing", (usersTyping) => {
+    typingLabel.innerHTML = usersTyping
 })
 
 socket.on("room change", (name) => {

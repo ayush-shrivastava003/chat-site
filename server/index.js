@@ -36,12 +36,25 @@ const server = express()
 const HTTPServer = http.Server(server)
 const socket = new Server(HTTPServer)
 const __dirname = dirname(fileURLToPath(import.meta.url))
+let usersTyping = []
 
 server.set('view engine', 'ejs')
 server.use('/assets', express.static(path.resolve(__dirname + '../../assets')))
 server.use(cookieParser())
 server.use(express.json())
 server.use(logReq)
+
+function getUsersTyping(author) {
+    let authors = ""
+
+    if (usersTyping.length == 1) {
+        authors = `${author} is typing...`
+    } else {
+        authors = authors.join(", ")
+        authors += "are typing..."
+    }
+    return authors
+}
 
 socket.on("connection", (socket) => {
     logCustom(`accepted connection from ${socket.handshake.address}`)
@@ -64,11 +77,14 @@ socket.on("connection", (socket) => {
     })
 
     socket.on("typing", (author) => {
-        socket.broadcast.emit("typing", author)
+        if (!(author in usersTyping)) {
+            socket.broadcast.emit("typing", getUsersTyping(author))
+        }
     })
 
-    socket.on("stop typing", () => {
-        socket.broadcast.emit("stop typing")
+    socket.on("stop typing", (author) => {
+        usersTyping = usersTyping.splice(usersTyping.indexOf(author))
+        socket.broadcast.emit("stop typing", getUsersTyping(author))
     })
 
     socket.on("room change", async (name, id) => {
