@@ -2,6 +2,7 @@
 
 :root {
     --main-font: "Hind";
+    /* hsl(224, 41%, 29%) */
     --main-color: hsl(231, 29%, 25%);
     --font-color: white;
     --secondary-color: #4D482A;
@@ -127,7 +128,7 @@ a {color: var(--font-color);}
 
 #message-container {
     margin-top: 2.5%;
-    margin-left: 5%;
+    padding-left: 5%;
     overflow: hidden scroll;
     height: 80%;
 }
@@ -206,4 +207,15 @@ a {color: var(--font-color);}
     text-align: center;
     border-style: none;
     margin-right: 2.5px;
+}
+
+#back-btn {
+    border : none;
+    background : transparent;
+    color : #333;
+    transition : color 0.2s;
+}
+
+#back-btn:hover {
+    color : #222;
 }
