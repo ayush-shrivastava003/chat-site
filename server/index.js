@@ -57,44 +57,48 @@ function getUsersTyping(author) {
 }
 
 socket.on("connection", (socket) => {
-    logCustom(`accepted connection from ${socket.handshake.address}`)
-    socket.on("disconnect", () => {
-        logCustom(`lost connection from ${socket.handshake.address}`)
-    })
-
-    socket.on("message", async (msg) => {
-
-        let room = await RoomModel.findById(msg.roomId)
-        room.messages.push({
-            date: getDate(),
-            epochTime: Date.now(),
-            content: msg.content,
-            author: getToken(JSON.parse(cookie.parse(socket.handshake.headers.cookie).info).token)
+    try {
+        logCustom(`accepted connection from ${socket.handshake.address}`)
+        socket.on("disconnect", () => {
+            logCustom(`lost connection from ${socket.handshake.address}`)
         })
-        await room.save()
-
-        socket.broadcast.emit("new", msg)
-    })
-
-    socket.on("typing", (author) => {
-        if (!(author in usersTyping)) {
-            socket.broadcast.emit("typing", getUsersTyping(author))
-        }
-    })
-
-    socket.on("stop typing", (author) => {
-        usersTyping = usersTyping.splice(usersTyping.indexOf(author), 1)
-        socket.broadcast.emit("stop typing", getUsersTyping(author))
-    })
-
-    socket.on("room change", async (name, id) => {
-        let room = await RoomModel.findById(id)
-        let oldName = room.name
-        room.name = name
-        await room.save()
-        logCustom(`The room ${room._id} (${oldName}) was updated to ${name}`)
-        socket.broadcast.emit("room change", name)
-    })
+    
+        socket.on("message", async (msg) => {
+    
+            let room = await RoomModel.findById(msg.roomId)
+            room.messages.push({
+                date: getDate(),
+                epochTime: Date.now(),
+                content: msg.content,
+                author: getToken(JSON.parse(cookie.parse(socket.handshake.headers.cookie).info).token)
+            })
+            await room.save()
+    
+            socket.broadcast.emit("new", msg)
+        })
+    
+        socket.on("typing", (author) => {
+            if (!(author in usersTyping)) {
+                socket.broadcast.emit("typing", getUsersTyping(author))
+            }
+        })
+    
+        socket.on("stop typing", (author) => {
+            usersTyping = usersTyping.splice(usersTyping.indexOf(author), 1)
+            socket.broadcast.emit("stop typing", getUsersTyping(author))
+        })
+    
+        socket.on("room change", async (name, id) => {
+            let room = await RoomModel.findById(id)
+            let oldName = room.name
+            room.name = name
+            await room.save()
+            logCustom(`The room ${room._id} (${oldName}) was updated to ${name}`)
+            socket.broadcast.emit("room change", name)
+        })
+    } catch (err) {
+        logErr(err)
+    }
 })
 
 server.get('/', async (req, res) => {

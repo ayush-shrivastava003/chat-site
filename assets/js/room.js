@@ -42,7 +42,7 @@ function resize(keyCode) {
     }
 }
 
-resize(13)
+// resize(13)
 
 entry.addEventListener('keyup', (event) => {
     if (event.keyCode == 13 && entry.value != '') {
