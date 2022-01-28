@@ -60,6 +60,7 @@ socket.on("connection", (socket) => {
     try {
         logCustom(`accepted connection from ${socket.handshake.address}. Current username: ${JSON.parse(cookie.parse(socket.handshake.headers.cookie).info).username}`)
         socket.on("disconnect", () => {
+            usersTyping.splice(JSON.parse(cookie.parse(socket.handshake.headers.cookie).info).username, 1)
             logCustom(`lost connection from ${socket.handshake.address}`)
         })
     
@@ -79,12 +80,13 @@ socket.on("connection", (socket) => {
     
         socket.on("typing", (author) => {
             if (!(author in usersTyping)) {
+                usersTyping.push(author)
                 socket.broadcast.emit("typing", getUsersTyping(author))
             }
         })
     
         socket.on("stop typing", (author) => {
-            usersTyping = usersTyping.splice(usersTyping.indexOf(author), 1)
+            usersTyping.splice(usersTyping.indexOf(author), 1)
             socket.broadcast.emit("stop typing", getUsersTyping(author))
         })
     
