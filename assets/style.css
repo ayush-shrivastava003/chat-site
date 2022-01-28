@@ -2,7 +2,7 @@
 
 :root {
     --main-font: "Hind";
-    --main-color: rgb(42, 47, 77);
+    --main-color: hsl(231, 29%, 25%);
     --font-color: white;
     --secondary-color: #4D482A;
     --secondary-color-highlight: #534e2f;

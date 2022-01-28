@@ -27,6 +27,19 @@
         <input id="entry" type="text" placeholder="send a message to <%= roomName %>">
         <p id="typing-label"> </p>
     </div>
+    <script>
+        const ent = document.getElementById("entry");
+        document.addEventListener("keydown", (e) => {
+            if (e.code.toString().indexOf("Key") < 0) {
+                return;
+            }
+            if (ent.matches(":focus")) {
+                return;
+            }
+            ent.focus();
+            ent.value += e.code.toString();
+        });
+    </script>
 </body>
 <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
