@@ -212,10 +212,12 @@ a {color: var(--font-color);}
 #back-btn {
     border : none;
     background : transparent;
-    color : #333;
+    color : #aaa;
     transition : color 0.2s;
+    font-size : 150%;
+    position : absolute;
 }
 
 #back-btn:hover {
-    color : #222;
+    color : #888;
 }
