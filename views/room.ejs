@@ -27,7 +27,7 @@
         <button id="file-upload">+</button>
         <input id="entry" type="text" placeholder="send a message to <%= roomName %>">
         <p id="typing-label"> </p>
-        <input id="to-pres" type="button" value="jump to present" onclick="jump_pres()" class="bare">
+        <input id="to-pres" type="button" value="jump to present" onclick="jump_pres()" class="bare" style="--c:transparent;">
     </div>
     <script>
         const ent = document.getElementById("entry");
@@ -49,9 +49,15 @@
             }
             const c = t.children[ind];
             if (c.getBoundingClientRect().top >= t.getBoundingClientRect().bottom) {
-                to_pres.hidden = false;
+                if (to_pres.hidden) {
+                    to_pres.hidden = false;
+                    to_pres.style.cssText = "--c:#aaa;";
+                }
             } else {
-                to_pres.hidden = true;
+                if (!to_pres.hidden) {
+                    to_pres.hidden = true;
+                    to_pres.style.cssText = "--c:transparent;";
+                }
             }
         });
         function jump_pres () {

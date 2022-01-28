@@ -228,8 +228,9 @@ input[type="button"].bare:hover {
     top : 5px;
 }
 
-#to-pres {
+input[type="button"]#to-pres.bare {
     position : absolute;
     right : 5px;
     top : 5px;
+    color : var(--c);
 }
