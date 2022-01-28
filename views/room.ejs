@@ -44,7 +44,9 @@
         const t = document.getElementById("message-container");
         const to_pres = document.getElementById("to-pres");
         t.addEventListener("scroll", (e) => {
-            const c = t.children[Math.max(t.length-1, t.length-15)];
+            const ind = Math.max(t.length-1, t.length-15);
+            console.log(ind, t.children.length);
+            const c = t.children[ind];
             if (c.getBoundingClientRect().top >= t.getBoundingClientRect().bottom) {
                 to_pres.hidden = false;
             } else {
