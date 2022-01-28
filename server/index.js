@@ -58,7 +58,7 @@ function getUsersTyping(author) {
 
 socket.on("connection", (socket) => {
     try {
-        logCustom(`accepted connection from ${socket.handshake.address}`)
+        logCustom(`accepted connection from ${socket.handshake.address}. Current username: ${JSON.parse(cookie.parse(socket.handshake.headers.cookie).info).username}`)
         socket.on("disconnect", () => {
             logCustom(`lost connection from ${socket.handshake.address}`)
         })
