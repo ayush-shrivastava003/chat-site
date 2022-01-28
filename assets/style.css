@@ -145,13 +145,13 @@ a {color: var(--font-color);}
 }
   
 #message-container::-webkit-scrollbar {
-    background-color: hsl(233, 21%, 40%);
+    background-color: hsl(233, 21%, 59%);
     border-radius: 5px;
     width: 15px;
     }
 
 #message-container::-webkit-scrollbar-thumb {
-    background-color: hsl(235, 13%, 23%);
+    background-color: hsl(235, 13%, 42%);
     border-radius: 5px;
     transition: 0.5s
     }
