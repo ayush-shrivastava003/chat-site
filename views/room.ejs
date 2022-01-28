@@ -42,6 +42,7 @@
         });
         const t = document.getElementById("message-container");
         const to_pres = document.getElementById("to-pres");
+        let tph = true;
         t.addEventListener("scroll", (e) => {
             const ind =t.children.length-15;
             if (ind < 0) {
@@ -49,14 +50,14 @@
             }
             const c = t.children[ind];
             if (c.getBoundingClientRect().top >= t.getBoundingClientRect().bottom) {
-                if (to_pres.hidden) {
-                    to_pres.hidden = false;
-                    to_pres.style.cssText = "opacity:100;";
+                if (tph) {
+                    tph = false;
+                    to_pres.style.cssText = "color:#aaa;";
                 }
             } else {
-                if (!to_pres.hidden) {
-                    to_pres.hidden = true;
-                    to_pres.style.cssText = "opacity:0;";
+                if (!tph) {
+                    tph = true;
+                    to_pres.style.cssText = "color:#aaaaaa00;";
                 }
             }
         });
