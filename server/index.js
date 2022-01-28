@@ -50,8 +50,7 @@ function getUsersTyping(author) {
     if (usersTyping.length == 1) {
         authors = `${author} is typing...`
     } else {
-        authors = usersTyping.join(", ")
-        authors += "are typing..."
+        authors = usersTyping.join(", ") + " are typing..."
     }
     return authors
 }
@@ -77,13 +76,16 @@ socket.on("connection", (socket) => {
     })
 
     socket.on("typing", (author) => {
-        if (!(author in usersTyping)) {
+        if (usersTyping.indexOf(author) < 0) {
             socket.broadcast.emit("typing", getUsersTyping(author))
         }
     })
 
     socket.on("stop typing", (author) => {
-        usersTyping = usersTyping.splice(usersTyping.indexOf(author))
+        if (usersTyping.indexOf(author) < 0) {
+            return;
+        }
+        usersTyping = usersTyping.splice(usersTyping.indexOf(author), 1)
         socket.broadcast.emit("stop typing", getUsersTyping(author))
     })
 
