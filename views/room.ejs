@@ -51,12 +51,12 @@
             if (c.getBoundingClientRect().top >= t.getBoundingClientRect().bottom) {
                 if (to_pres.hidden) {
                     to_pres.hidden = false;
-                    to_pres.style.cssText = "--c:#aaa;";
+                    to_pres.style.cssText = "opacity:100;";
                 }
             } else {
                 if (!to_pres.hidden) {
                     to_pres.hidden = true;
-                    to_pres.style.cssText = "--c:transparent;";
+                    to_pres.style.cssText = "opacity:0;";
                 }
             }
         });

@@ -213,7 +213,7 @@ a {color: var(--font-color);}
 input[type="button"].bare {
     background : transparent;
     color : #aaa;
-    transition : color 0.2s;
+    transition : color 0.2s, opacity 0.2s;
     border : none;
 }
 
@@ -232,5 +232,4 @@ input[type="button"]#to-pres.bare {
     position : absolute;
     right : 5px;
     top : 5px;
-    color : var(--c);
 }
