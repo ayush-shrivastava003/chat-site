@@ -218,7 +218,7 @@ input[type="button"].bare {
 }
 
 input[type="button"].bare:hover {
-    color : #888 !important;
+    color : #888;
 }
 
 #back-btn {
@@ -228,8 +228,16 @@ input[type="button"].bare:hover {
     top : 5px;
 }
 
-input[type="button"]#to-pres.bare {
+#to-pres {
     position : absolute;
     right : 5px;
     top : 5px;
+    background : transparent;
+    color : rgba(170, 170, 170, var(--a, 1));
+    transition : color 0.2s;
+    border : none;
+}
+
+#to-pres:hover {
+    color : rgba(136, 136, 136, var(--a, 1));
 }
