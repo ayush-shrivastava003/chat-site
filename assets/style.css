@@ -2,7 +2,8 @@
 
 :root {
     --main-font: "Hind";
-    --main-color: rgb(42, 47, 77);
+    /* hsl(224, 41%, 29%) */
+    --main-color: hsl(231, 29%, 25%);
     --font-color: white;
     --secondary-color: #4D482A;
     --secondary-color-highlight: #534e2f;
@@ -127,7 +128,7 @@ a {color: var(--font-color);}
 
 #message-container {
     margin-top: 2.5%;
-    margin-left: 5%;
+    padding-left: 5%;
     overflow: hidden scroll;
     height: 80%;
 }
@@ -141,23 +142,23 @@ a {color: var(--font-color);}
 }
 
 .message:hover {
-    background-color: rgb(46, 49, 70);
+    background-color: #46474e;
 }
   
 #message-container::-webkit-scrollbar {
-    background-color: rgb(46, 49, 70);
+    background-color: hsl(233, 21%, 59%);
     border-radius: 5px;
     width: 15px;
     }
 
 #message-container::-webkit-scrollbar-thumb {
-    background-color: rgb(42, 43, 54);
+    background-color: hsl(235, 13%, 42%);
     border-radius: 5px;
     transition: 0.5s
     }
 
 #message-container::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(36, 37, 43);;
+    background-color: hsl(231, 9%, 35%);
     border-radius: 5px;
     }
 
@@ -167,6 +168,7 @@ a {color: var(--font-color);}
 
 .date {
     font-size: 8pt;
+    user-select : none;
 }
 
 #room-container {
@@ -184,7 +186,7 @@ a {color: var(--font-color);}
     margin: auto;
     display: block;
     font-size: 1.5em;
-    background-color: transparent;
+    background-color: #6e6e6e;
     border-style: none;
     outline: none;
     font-family: var(--main-font);
@@ -195,7 +197,7 @@ a {color: var(--font-color);}
 }
 
 #chat-title:hover {
-    background-color: rgb(42, 43, 54);;
+    background-color: #4e4e4e;
 }
 
 #file-upload {
@@ -208,6 +210,34 @@ a {color: var(--font-color);}
     margin-right: 2.5px;
 }
 
-.content {
-    margin-top: 0.5%;
+input[type="button"].bare {
+    background : transparent;
+    color : #aaa;
+    transition : color 0.2s, opacity 0.2s;
+    border : none;
+}
+
+input[type="button"].bare:hover {
+    color : #888;
+}
+
+#back-btn {
+    font-size : 150%;
+    position : absolute;
+    left : 5px;
+    top : 5px;
+}
+
+#to-pres {
+    position : absolute;
+    right : 5px;
+    top : 5px;
+    background : transparent;
+    color : rgba(170, 170, 170, var(--a, 1));
+    transition : color 0.2s;
+    border : none;
+}
+
+#to-pres:hover {
+    color : rgba(136, 136, 136, var(--a, 1));
 }

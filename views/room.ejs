@@ -9,8 +9,9 @@
     <title><%= roomName %> - chat-site</title>
 </head>
 <body>
+    <input type="button" id="back-btn" value="back" onclick="window.location.pathname='/chats'" class="bare">
     <input type="text" id="chat-title" value="<%=roomName%>">
-    <div id="message-container">
+    <div id="message-container" style="border-top:solid dimgray 2px;">
         <% messages.map(msg => { %>
             <div class="message">
                 <div class="author-date">
@@ -21,12 +22,49 @@
             </div>
         <% }) %>
     </div>
-    <div id="entry-container">
+    <div id="entry-container" style="border-top:solid dimgray 2px;">
         <input type=file id="file-upload-hidden"style="display: none;">
         <button id="file-upload">+</button>
         <input id="entry" type="text" placeholder="send a message to <%= roomName %>">
         <p id="typing-label"> </p>
+        <input id="to-pres" type="button" value="jump to present" onclick="jump_pres()" style="--a:0;">
     </div>
+    <script>
+        const ent = document.getElementById("entry");
+        document.addEventListener("keydown", (e) => {
+            if (e.code.toString().indexOf("Key") < 0) {
+                return;
+            }
+            if (ent.matches(":focus")) {
+                return;
+            }
+            ent.focus();
+        });
+        const t = document.getElementById("message-container");
+        const to_pres = document.getElementById("to-pres");
+        let tph = true;
+        t.addEventListener("scroll", (e) => {
+            const ind =t.children.length-15;
+            if (ind < 0) {
+                return;
+            }
+            const c = t.children[ind];
+            if (c.getBoundingClientRect().top >= t.getBoundingClientRect().bottom) {
+                if (tph) {
+                    tph = false;
+                    to_pres.style.cssText = "";
+                }
+            } else {
+                if (!tph) {
+                    tph = true;
+                    to_pres.style.cssText = "--a:0;";
+                }
+            }
+        });
+        function jump_pres () {
+            t.scroll({left:0, top:t.scrollHeight, behavior:"smooth"});
+        }
+    </script>
 </body>
 <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
 <script>
