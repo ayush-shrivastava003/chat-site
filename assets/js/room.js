@@ -1,5 +1,4 @@
 const socket = io()
-// const converter = new showdown.Converter()
 let msgContainer = document.getElementById("message-container")
 msgContainer.scrollTop = msgContainer.scrollHeight;
 const typingLabel = document.getElementById("typing-label")
@@ -27,6 +26,7 @@ function append(content, author) {
 
     messageDiv.className = "message"
     messageContent.innerHTML = content
+    messageContent.className = "content"
     authorDate.className = "author-date"
     authorDate.innerHTML = `<p>${author}</p> <p class="date">${getDate()}</p>`
     messageDiv.appendChild(authorDate)
@@ -76,8 +76,8 @@ socket.on("new", (msg) => {
     msgContainer.scrollTop = msgContainer.scrollHeight;
 })
 
-socket.on("typing", (author) => {
-    typingLabel.innerHTML = `${author} is typing...`
+socket.on("typing", (authorsTyping) => {
+    typingLabel.innerHTML = authorsTyping
 })
 
 socket.on("stop typing", (usersTyping) => {

@@ -207,3 +207,7 @@ a {color: var(--font-color);}
     border-style: none;
     margin-right: 2.5px;
 }
+
+.content {
+    margin-top: 0.5%;
+}

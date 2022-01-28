@@ -83,14 +83,16 @@ socket.on("connection", (socket) => {
     })
 
     socket.on("stop typing", (author) => {
-        usersTyping = usersTyping.splice(usersTyping.indexOf(author))
+        usersTyping = usersTyping.splice(usersTyping.indexOf(author), 1)
         socket.broadcast.emit("stop typing", getUsersTyping(author))
     })
 
     socket.on("room change", async (name, id) => {
         let room = await RoomModel.findById(id)
+        let oldName = room.name
         room.name = name
         await room.save()
+        logCustom(`The room ${room._id} (${oldName}) was updated to ${name}`)
         socket.broadcast.emit("room change", name)
     })
 })
@@ -108,5 +110,5 @@ server.get("*", async (req, res) => {
 
 HTTPServer.listen(process.env.PORT, ()=> {
     console.log("Started HTTP server. Port:", process.env.PORT)
-    logCustom("Started HTTP server. Port:", process.env.PORT)
+    logCustom("Started HTTP server. Port: " + process.env.PORT)
 })

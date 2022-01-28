@@ -2,6 +2,7 @@ import express from 'express'
 import UserModel from '../models/user_model.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { logCustom } from '../logger.js'
 
 const AccountRouter = new express.Router()
 
@@ -20,7 +21,7 @@ async function verifyLogin(req, res, next) {
             !(await UserModel.exists({_id: getToken(token)})) // if account was deleted
         ) return res.redirect('/account/login')
         next()
-    } else {return res.redirect("account/login")}
+    } else {return res.redirect("/account/login")}
 
 }
 
@@ -46,8 +47,8 @@ AccountRouter.post('/register', async (req, res) => {
             password: pwd,
         })
         await user.save()
-
         let token = await jwt.sign({id: user._id}, process.env.JWT_SECRET)
+        logCustom(`${req.connection.remoteAddress} REGISTERED the account ${user._id} (${user.username})`)
         return res.cookie('info', JSON.stringify({username, token})).status(200).json({status: "ok"})
 
     } else {return res.status(400).json({error: 'Password should be at least 8 characters!'})}
@@ -61,6 +62,7 @@ AccountRouter.post('/login', async (req, res) => {
 
     if (await bcrypt.compare(password, user.password)) {
         let token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
+        logCustom(`${req.connection.remoteAddress} LOGGED INTO the account ${user._id} (${user.username})`)
         return res.cookie('info', JSON.stringify({username, token})).status(200).json({status: 'ok'})
     } else return res.status(400).json({status: 'error', error: 'Invalid username or password'})
 })
