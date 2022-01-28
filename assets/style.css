@@ -145,7 +145,7 @@ a {color: var(--font-color);}
 }
   
 #message-container::-webkit-scrollbar {
-    background-color: hsl(233, 21%, 34%);
+    background-color: hsl(233, 21%, 40%);
     border-radius: 5px;
     width: 15px;
     }
