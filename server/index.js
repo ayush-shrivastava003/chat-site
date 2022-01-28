@@ -50,8 +50,8 @@ function getUsersTyping(author) {
     if (usersTyping.length == 1) {
         authors = `${author} is typing...`
     } else {
-        authors = authors.join(", ")
-        authors += "are typing..."
+        authors = usersTyping.join(", ")
+        authors += " are typing..."
     }
     return authors
 }
