@@ -44,6 +44,7 @@
         const t = document.getElementById("message-container");
         const to_pres = document.getElementById("to-pres");
         t.addEventListener("scroll", (e) => {
+            console.log(t.scrollTop - t.scrollHeight);
             if (t.scrollTop - t.scrollHeight < -100) {
                 to_pres.hidden = false;
             } else {
