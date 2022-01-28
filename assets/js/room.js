@@ -67,7 +67,7 @@ let sent_typing = false;
 
 entry.addEventListener("keyup", (e) => {
     if (e.code.toString() == "Enter") {
-        if (entry.value.length === 0 || entry.split(" ").join("") === "") {
+        if (entry.value.length === 0 || entry.value.split(" ").join("") === "") {
             return;
         }
         let id = window.location.pathname.split("/");
