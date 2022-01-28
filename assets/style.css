@@ -151,7 +151,7 @@ a {color: var(--font-color);}
     }
 
 #message-container::-webkit-scrollbar-thumb {
-    background-color: hsl(235, 13%, 30%);
+    background-color: hsl(235, 13%, 23%);
     border-radius: 5px;
     transition: 0.5s
     }
