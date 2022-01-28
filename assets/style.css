@@ -142,7 +142,7 @@ a {color: var(--font-color);}
 }
 
 .message:hover {
-    background-color: rgb(46, 49, 70);
+    background-color: #46474e;
 }
   
 #message-container::-webkit-scrollbar {
@@ -209,17 +209,26 @@ a {color: var(--font-color);}
     margin-right: 2.5px;
 }
 
-#back-btn {
-    border : none;
+input[type="button"].bare {
     background : transparent;
     color : #aaa;
     transition : color 0.2s;
+    border : none;
+}
+
+input[type="button"].bare:hover {
+    color : #888;
+}
+
+#back-btn {
     font-size : 150%;
     position : absolute;
     left : 5px;
     top : 5px;
 }
 
-#back-btn:hover {
-    color : #888;
+#to-pres {
+    position : absolute;
+    right : 5px;
+    top : 5px;
 }
