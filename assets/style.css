@@ -184,7 +184,7 @@ a {color: var(--font-color);}
     margin: auto;
     display: block;
     font-size: 1.5em;
-    background-color: 6e6e6e;
+    background-color: #6e6e6e;
     border-style: none;
     outline: none;
     font-family: var(--main-font);
@@ -195,7 +195,7 @@ a {color: var(--font-color);}
 }
 
 #chat-title:hover {
-    background-color: 4e4e4e;
+    background-color: #4e4e4e;
 }
 
 #file-upload {
