@@ -19,6 +19,23 @@ function getDate() {
     return `${month}/${day}/${year}`
 }
 
+function getUsersTyping(author, usersTyping) {
+    let authors = ""
+    
+    if (usersTyping.includes(author)) {
+        usersTyping.splice(usersTyping.indexOf(author), 1)
+    }
+
+    if (usersTyping.length == 1) {
+        authors = `${usersTyping[0]} is typing...`
+    } else if (usersTyping.length == 0) {
+        authors = ""
+    } else {
+        authors = usersTyping.join(", ") + " are typing..."
+    }
+    return authors
+}
+
 function append(content, author) {
     let messageDiv = document.createElement("div")
     let messageContent = document.createElement("p")
@@ -42,7 +59,6 @@ function resize(keyCode) {
     }
 }
 
-// resize(13)
 
 entry.addEventListener('keyup', (event) => {
     if (event.keyCode == 13 && entry.value != '') {
@@ -63,38 +79,6 @@ entry.addEventListener('keyup', (event) => {
     }
 })
 
-// let sent_typing = false;
-
-// entry.addEventListener("keyup", (e) => {
-//     if (e.code.toString() == "Enter") {
-//         if (entry.value.length === 0 || entry.value.split(" ").join("") === "") {
-//             return;
-//         }
-//         let id = window.location.pathname.split("/");
-//         id = id[id.length-1];
-//         socket.emit("message", {content:entry.value, roomId:id, author:getUser()});
-//         socket.emit("stop typing", getUser());
-//         sent_typing = false;
-//         append();
-//         return;
-//     }
-//     if (entry.value.length > 0) {
-//         if (!sent_typing) {
-//             sent_typing = true;
-//             socket.emit("typing", getUser());
-//         }
-//         if (entry.value.length > 2000) {
-//             entry.value = entry.value.slice(0, 2000);
-//             return;
-//         }
-//     } else {
-//         if (sent_typing) {
-//             sent_typing = false;
-//             socket.emit("stop typing", getUser());
-//         }
-//     }
-// });
-
 
 document.getElementById("file-upload").addEventListener("click", () => {
     document.getElementById("file-upload-hidden").click()
@@ -109,11 +93,11 @@ socket.on("new", (msg) => {
 })
 
 socket.on("typing", (authorsTyping) => {
-    typingLabel.innerHTML = authorsTyping
+    typingLabel.innerHTML = getUsersTyping(getUser(), authorsTyping)
 })
 
 socket.on("stop typing", (usersTyping) => {
-    typingLabel.innerHTML = usersTyping
+    typingLabel.innerHTML = getUsersTyping(getUser(), usersTyping)
 })
 
 socket.on("room change", (name) => {

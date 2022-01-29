@@ -26,6 +26,8 @@ mongoose.connect(
             throw err
         }
 
+        await new RoomModel({name: "secondary"}).save()
+
         console.log(`Connected to DB: ${process.env.DB}.`)
         logCustom(`Connected to DB: ${process.env.DB}.`)
     }
@@ -43,17 +45,6 @@ server.use('/assets', express.static(path.resolve(__dirname + '../../assets')))
 server.use(cookieParser())
 server.use(express.json())
 server.use(logReq)
-
-function getUsersTyping(author) {
-    let authors = ""
-
-    if (usersTyping.length == 1) {
-        authors = `${author} is typing...`
-    } else {
-        authors = usersTyping.join(", ") + " are typing..."
-    }
-    return authors
-}
 
 socket.on("connection", (socket) => {
     logCustom(`accepted connection from ${socket.handshake.address}`)
@@ -77,7 +68,8 @@ socket.on("connection", (socket) => {
 
     socket.on("typing", (author) => {
         if (usersTyping.indexOf(author) < 0) {
-            socket.broadcast.emit("typing", getUsersTyping(author))
+            usersTyping.push(author)
+            socket.broadcast.emit("typing", usersTyping)
         }
     })
 
@@ -85,8 +77,8 @@ socket.on("connection", (socket) => {
         if (usersTyping.indexOf(author) < 0) {
             return;
         }
-        usersTyping = usersTyping.splice(usersTyping.indexOf(author), 1)
-        socket.broadcast.emit("stop typing", getUsersTyping(author))
+        usersTyping.splice(usersTyping.indexOf(author), 1)
+        socket.broadcast.emit("stop typing",usersTyping)
     })
 
     socket.on("room change", async (name, id) => {
