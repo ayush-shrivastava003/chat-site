@@ -26,6 +26,8 @@ mongoose.connect(
             throw err
         }
 
+        await new RoomModel({name: "secondary"}).save()
+
         console.log(`Connected to DB: ${process.env.DB}.`)
         logCustom(`Connected to DB: ${process.env.DB}.`)
     }
@@ -44,63 +46,47 @@ server.use(cookieParser())
 server.use(express.json())
 server.use(logReq)
 
-function getUsersTyping(author) {
-    let authors = ""
-
-    if (usersTyping.length == 1) {
-        authors = `${author} is typing...`
-    } else {
-        authors = usersTyping.join(", ")
-        authors += " are typing..."
-    }
-    return authors
-}
-
 socket.on("connection", (socket) => {
-    try {
-        logCustom(`accepted connection from ${socket.handshake.address}. Current username: ${JSON.parse(cookie.parse(socket.handshake.headers.cookie).info).username}`)
-        socket.on("disconnect", () => {
-            usersTyping.splice(JSON.parse(cookie.parse(socket.handshake.headers.cookie).info).username, 1)
-            logCustom(`lost connection from ${socket.handshake.address}`)
+    logCustom(`accepted connection from ${socket.handshake.address}`)
+    socket.on("disconnect", () => {
+        logCustom(`lost connection from ${socket.handshake.address}`)
+    })
+
+    socket.on("message", async (msg) => {
+
+        let room = await RoomModel.findById(msg.roomId)
+        room.messages.push({
+            date: getDate(),
+            epochTime: Date.now(),
+            content: msg.content,
+            author: getToken(JSON.parse(cookie.parse(socket.handshake.headers.cookie).info).token)
         })
-    
-        socket.on("message", async (msg) => {
-    
-            let room = await RoomModel.findById(msg.roomId)
-            room.messages.push({
-                date: getDate(),
-                epochTime: Date.now(),
-                content: msg.content,
-                author: getToken(JSON.parse(cookie.parse(socket.handshake.headers.cookie).info).token)
-            })
-            await room.save()
-    
-            socket.broadcast.emit("new", msg)
-        })
-    
-        socket.on("typing", (author) => {
-            if (!(author in usersTyping)) {
-                usersTyping.push(author)
-                socket.broadcast.emit("typing", getUsersTyping(author))
-            }
-        })
-    
-        socket.on("stop typing", (author) => {
-            usersTyping.splice(usersTyping.indexOf(author), 1)
-            socket.broadcast.emit("stop typing", getUsersTyping(author))
-        })
-    
-        socket.on("room change", async (name, id) => {
-            let room = await RoomModel.findById(id)
-            let oldName = room.name
-            room.name = name
-            await room.save()
-            logCustom(`The room ${room._id} (${oldName}) was updated to ${name}`)
-            socket.broadcast.emit("room change", name)
-        })
-    } catch (err) {
-        logErr(err)
-    }
+        await room.save()
+
+        socket.broadcast.emit("new", msg)
+    })
+
+    socket.on("typing", (author) => {
+        if (usersTyping.indexOf(author) < 0) {
+            usersTyping.push(author)
+            socket.broadcast.emit("typing", usersTyping)
+        }
+    })
+
+    socket.on("stop typing", (author) => {
+        if (usersTyping.indexOf(author) < 0) {
+            return;
+        }
+        usersTyping.splice(usersTyping.indexOf(author), 1)
+        socket.broadcast.emit("stop typing",usersTyping)
+    })
+
+    socket.on("room change", async (name, id) => {
+        let room = await RoomModel.findById(id)
+        room.name = name
+        await room.save()
+        socket.broadcast.emit("room change", name)
+    })
 })
 
 server.get('/', async (req, res) => {
@@ -116,5 +102,5 @@ server.get("*", async (req, res) => {
 
 HTTPServer.listen(process.env.PORT, ()=> {
     console.log("Started HTTP server. Port:", process.env.PORT)
-    logCustom("Started HTTP server. Port: " + process.env.PORT)
+    logCustom("Started HTTP server. Port:", process.env.PORT)
 })

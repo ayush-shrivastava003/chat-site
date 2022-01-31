@@ -19,6 +19,23 @@ function getDate() {
     return `${month}/${day}/${year}`
 }
 
+function getUsersTyping(author, usersTyping) {
+    let authors = ""
+    
+    if (usersTyping.includes(author)) {
+        usersTyping.splice(usersTyping.indexOf(author), 1)
+    }
+
+    if (usersTyping.length == 1) {
+        authors = `${usersTyping[0]} is typing...`
+    } else if (usersTyping.length == 0) {
+        authors = ""
+    } else {
+        authors = usersTyping.join(", ") + " are typing..."
+    }
+    return authors
+}
+
 function append(content, author) {
     let messageDiv = document.createElement("div")
     let messageContent = document.createElement("p")
@@ -42,7 +59,6 @@ function resize(keyCode) {
     }
 }
 
-// resize(13)
 
 entry.addEventListener('keyup', (event) => {
     if (event.keyCode == 13 && entry.value != '') {
@@ -77,11 +93,11 @@ socket.on("new", (msg) => {
 })
 
 socket.on("typing", (authorsTyping) => {
-    typingLabel.innerHTML = authorsTyping
+    typingLabel.innerHTML = getUsersTyping(getUser(), authorsTyping)
 })
 
 socket.on("stop typing", (usersTyping) => {
-    typingLabel.innerHTML = usersTyping
+    typingLabel.innerHTML = getUsersTyping(getUser(), usersTyping)
 })
 
 socket.on("room change", (name) => {
