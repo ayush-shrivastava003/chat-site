@@ -86,6 +86,19 @@ document.getElementById("file-upload").addEventListener("click", () => {
 
 chatTitle.addEventListener("keyup", (event) => {resize(event.keyCode)})
 
+msgContainer.addEventListener("scroll", async () => {
+    if (msgContainer.scrollTop == 0) {
+        console.log("sending req now")
+        let messages = await fetch(`/chats/${roomId}/load`, {
+            method: 'POST',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({offset: 25})
+        })
+
+//      insert messages into the div (from the top)
+    }
+})
+
 socket.on("new", (msg) => {
     append(msg.content, msg.author)
     let msgContainer = document.getElementById("message-container")

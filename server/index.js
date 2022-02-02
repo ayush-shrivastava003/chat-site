@@ -26,7 +26,7 @@ mongoose.connect(
             throw err
         }
 
-        await new RoomModel({name: "secondary"}).save()
+        // await new RoomModel({name: "secondary"}).save()
 
         console.log(`Connected to DB: ${process.env.DB}.`)
         logCustom(`Connected to DB: ${process.env.DB}.`)
@@ -99,6 +99,20 @@ server.use('/account', AccountRouter)
 server.get("*", async (req, res) => {
     res.render('404')
 })
+
+let r = await RoomModel.findOne({name: "secondary"})
+// r.messages = []
+
+for (let i = 1; i <= 40; i++) {
+    r.messages.push({
+        date: getDate(),
+        epochTime: Date.now(),
+        content: `${i}`,
+        author: "61f9afbf55ba5178e015a63b"
+    })
+}
+
+await r.save()
 
 HTTPServer.listen(process.env.PORT, ()=> {
     console.log("Started HTTP server. Port:", process.env.PORT)
