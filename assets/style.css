@@ -240,6 +240,6 @@ input[type="button"].bare:hover {
 }
 
 #to-pres:hover {
-    /* color : rgba(136, 136, 136, var(--a, 1)); */
-    color: var(--font-color)
+    color : rgba(136, 136, 136, var(--a, 1));
+    /* color: var(--font-color) */
 }
