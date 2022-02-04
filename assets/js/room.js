@@ -106,6 +106,7 @@ socket.on("new", (msg) => {
 })
 
 socket.on("typing", (authorsTyping) => {
+    console.log(`${authorsTyping}`)
     typingLabel.innerHTML = getUsersTyping(getUser(), authorsTyping)
 })
 
