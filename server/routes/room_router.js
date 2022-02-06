@@ -7,6 +7,17 @@ import mongoose from 'mongoose'
 const RoomRouter = new express.Router()
 
 RoomRouter.use(verifyLogin) // only allow messaging to those who are logged in
+RoomRouter.use(express.urlencoded({extended: true}))
+
+async function getAuthors(messages) {
+    messages = JSON.parse(JSON.stringify(messages)) // deep copy of room.messages
+    // console.log(messages)
+    await Promise.all(messages.map(async (msg) => {
+        let author = (await UserModel.findById(msg.author)).username
+        messages[messages.indexOf(msg)].author = author
+    }))
+    return messages
+}
 
 RoomRouter.get('/', async (req, res) => {
     let rooms = await RoomModel.find()
@@ -19,28 +30,35 @@ RoomRouter.get('/:room', async (req, res) => {
         let room = await RoomModel.findById(id).sort({epochTime: 1})
         if (!room) {return res.render('404')}
 
-        room.messages.splice(0, 25)
-        let msgs = JSON.parse(JSON.stringify(room.messages)) // deep copy of room.messages
-        await Promise.all(msgs.map(async (msg) => {
-            let author = (await UserModel.findById(msg.author)).username
-            msgs[msgs.indexOf(msg)].author = author
-        }))
-    
+        room.messages.splice(0, room.messages.length-25)
+        let msgs = await getAuthors(room.messages) 
         res.render('room', {messages: msgs, roomName: room.name, roomId: room._id})
     } else {return res.render('404')}
 })
 
 RoomRouter.post('/:room/load', async (req, res) => {
     let id = req.params.room
+    let {offset, loaded} = req.body
+    console.log(req.body)
+
     if (
         !(mongoose.isValidObjectId(id))
         ||
         !(await RoomModel.exists({_id: id}))
     ) {return res.render('404')}
 
-    let messages = (await RoomModel.findById(id)).messages
-    messages.splice(req.body.offset, 25)
-    console.log(messages, typeof messages)
+    let room = await RoomModel.findById(id)
+    let messages = room.messages
+    let len = messages.length
+    console.log(`${len}-${loaded} is ${len-loaded}`)
+    if (len-loaded < 25) {
+        messages.splice(len-loaded, loaded)
+    } else {
+        messages = messages.splice(len-loaded-25, loaded)
+    }
+    
+    messages = await getAuthors(messages)
+    return res.render("messages", {roomId: id, messages: messages, roomName: room.name})
     
 
 

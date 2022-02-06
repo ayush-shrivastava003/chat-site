@@ -7,23 +7,20 @@
     <link rel="stylesheet" href="../assets/style.css">
     <link rel="icon" href="../assets/icon.png">
     <title><%= roomName %> - chat-site</title>
+    <script defer src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+    <script>
+        const roomId = "<%= roomId %>"
+    </script>
+    <script defer src="../assets/js/room.js"></script>
 </head>
 <body>
     <input type="button" id="back-btn" value="back" onclick="window.location.pathname='/chats'" class="bare">
     <input type="text" id="chat-title" value="<%=roomName%>">
-    <div id="message-container" style="border-top:solid dimgray 2px;">
-        <% messages.map(msg => { %>
-            <div class="message">
-                <div class="author-date">
-                    <p><%= msg.author %></p>
-                    <p class="date"><%= msg.date %></p>
-                </div>
-                <p class="content"><%= msg.content %></p>
-            </div>
-        <% }) %>
+    <div id="message-container" style="border-top:solid dimgray 2px;"> 
+        <%- include("messages", {messages: messages, roomId: roomId, roomName: roomName}) %>
     </div>
     <div id="entry-container" style="border-top:solid dimgray 2px;">
-        <input type=file id="file-upload-hidden"style="display: none;">
+        <input type="file" id="file-upload-hidden"style="display: none;">
         <button id="file-upload">+</button>
         <input id="entry" type="text" placeholder="send a message to <%= roomName %>">
         <p id="typing-label"> </p>
@@ -66,9 +63,4 @@
         }
     </script>
 </body>
-<script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
-<script>
-    const roomId = "<%= roomId %>"
-</script>
-<script src="../assets/js/room.js"></script>
 </html>

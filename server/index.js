@@ -104,10 +104,10 @@ server.get("*", async (req, res) => {
     res.render('404')
 })
 
-// let r = await RoomModel.findOne({name: "secondary"})
+// let r = await RoomModel.findOne({name: "hello world"})
 // r.messages = []
 
-// for (let i = 1; i <= 40; i++) {
+// for (let i = 1; i <= 50; i++) {
 //     r.messages.push({
 //         date: getDate(),
 //         epochTime: Date.now(),
@@ -120,5 +120,5 @@ server.get("*", async (req, res) => {
 
 HTTPServer.listen(process.env.PORT, ()=> {
     console.log("Started HTTP server. Port:", process.env.PORT)
-    logCustom("Started HTTP server. Port:", process.env.PORT)
+    logCustom("Started HTTP server. Port: " + process.env.PORT)
 })
