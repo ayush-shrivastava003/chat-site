@@ -86,6 +86,23 @@ document.getElementById("file-upload").addEventListener("click", () => {
 
 chatTitle.addEventListener("keyup", (event) => {resize(event.keyCode)})
 
+msgContainer.addEventListener("scroll", async () => {
+    if (msgContainer.scrollTop == 0) {
+        console.log("sending req now")
+        let loaded = document.getElementsByClassName("message").length
+        console.log(loaded)
+
+        let messages = await fetch(`/chats/${roomId}/load`, {
+                method: 'POST',
+                headers: {'Content-type': 'application/json'},
+                body: JSON.stringify({offset: 0, loaded: loaded})
+            })
+        messages = await messages.text()
+        console.log(`inserting ${messages} into msgContainer div`)
+        msgContainer.innerHTML = messages + msgContainer.innerHTML
+    }
+})
+
 socket.on("new", (msg) => {
     append(msg.content, msg.author)
     let msgContainer = document.getElementById("message-container")
@@ -93,6 +110,7 @@ socket.on("new", (msg) => {
 })
 
 socket.on("typing", (authorsTyping) => {
+    console.log(`${authorsTyping}`)
     typingLabel.innerHTML = getUsersTyping(getUser(), authorsTyping)
 })
 

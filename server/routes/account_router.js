@@ -49,7 +49,11 @@ AccountRouter.post('/register', async (req, res) => {
         await user.save()
         let token = await jwt.sign({id: user._id}, process.env.JWT_SECRET)
         logCustom(`${req.connection.remoteAddress} REGISTERED the account ${user._id} (${user.username})`)
-        return res.cookie('info', JSON.stringify({username, token})).status(200).json({status: "ok"})
+        return res.cookie(
+            'info', 
+            JSON.stringify({username, token}),
+            {maxAge: 60480000}
+            ).status(200).json({status: "ok"})
 
     } else {return res.status(400).json({error: 'Password should be at least 8 characters!'})}
 })
