@@ -15,7 +15,7 @@
 </head>
 <body>
     <input type="button" id="back-btn" value="back" onclick="window.location.pathname='/chats'" class="bare">
-    <input type="text" id="chat-title" value="<%=roomName%>">
+    <input type="text" id="chat-title" value="<%=roomName%>" spellcheck="false">
     <div id="message-container" style="border-top:solid dimgray 2px;"> 
         <%- include("messages", {messages: messages, roomId: roomId, roomName: roomName}) %>
     </div>
