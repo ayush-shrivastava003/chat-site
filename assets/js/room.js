@@ -5,6 +5,20 @@ const typingLabel = document.getElementById("typing-label")
 const chatTitle = document.getElementById("chat-title")
 const entry = document.getElementById("entry")
 
+let typing_timer = -1;
+
+function count_down () {
+    if (typing_timer === 0) {
+        socket.emit("stop typing", getUser());
+    }
+    if (typing_timer >= 0) {
+        typing_timer --;
+    }
+    setTimeout(count_down, 1000);
+}
+
+count_down();
+
 function getUser() {
     let data = document.cookie.split(';')[0].split("=")[1]
     return (JSON.parse(decodeURIComponent(data))).username
@@ -71,10 +85,12 @@ entry.addEventListener('keyup', (event) => {
         append(entry.value, getUser())
         entry.value = ''
         msgContainer.scrollTop = msgContainer.scrollHeight;
+        typing_timer = 1;
     } else {
-        setTimeout(() => {
-            socket.emit("stop typing", getUser())
-        }, 5000)
+        // setTimeout(() => {
+        //     socket.emit("stop typing", getUser())
+        // }, 5000)
+        typing_timer = 5;
         socket.emit("typing", getUser())
     }
 })
