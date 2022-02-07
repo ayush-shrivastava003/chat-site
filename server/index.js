@@ -99,6 +99,7 @@ server.get('/', async (req, res) => {
 
 server.use('/chats', RoomRouter)
 server.use('/account', AccountRouter)
+server.get("/data-migration", async (req, res) => {return res.render("data-migration")});
 
 server.get("*", async (req, res) => {
     res.render('404')
