@@ -243,3 +243,9 @@ input[type="button"].bare:hover {
     color : rgba(136, 136, 136, var(--a, 1));
     /* color: var(--font-color) */
 }
+
+p#typing-label {
+    position : absolute;
+    left : 50%;
+    transform : translate(-50%, 0px);
+}
