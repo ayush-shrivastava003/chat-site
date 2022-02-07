@@ -33,7 +33,7 @@ function getUsersTyping(author, usersTyping) {
     } else {
         authors = usersTyping.join(", ") + " are typing..."
     }
-    return authors
+    return authors === "" ? " " : authors;
 }
 
 function append(content, author) {
@@ -61,7 +61,7 @@ function resize(keyCode) {
 
 
 entry.addEventListener('keyup', (event) => {
-    if (event.keyCode == 13 && entry.value != '') {
+    if (event.keyCode == 13 && entry.value.split(" ").join("") != '') {
         if (entry.value.length > 2000) {
             alert("message content is more than 2000 characters")
             return

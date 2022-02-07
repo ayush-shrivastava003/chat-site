@@ -28,8 +28,12 @@
     </div>
     <script>
         const ent = document.getElementById("entry");
+        const room_name = document.getElementById("chat-title");
         document.addEventListener("keydown", (e) => {
             if (e.code.toString().indexOf("Key") < 0) {
+                return;
+            }
+            if (room_name.matches(":focus")) {
                 return;
             }
             if (ent.matches(":focus")) {
