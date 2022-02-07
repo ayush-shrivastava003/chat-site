@@ -127,7 +127,7 @@ socket.on("new", (msg) => {
 
 socket.on("typing", (authorsTyping) => {
     console.log(`${authorsTyping}`)
-    const v = getUsersTyping(getUser(), usersTyping);
+    const v = getUsersTyping(getUser(), authorsTyping);
     typingLabel.innerHTML = v;
     typingLabel.className = v === "a" ? "soft-hide" : "";
 })
