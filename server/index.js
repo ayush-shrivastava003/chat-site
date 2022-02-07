@@ -26,7 +26,7 @@ mongoose.connect(
             throw err
         }
 
-        await new RoomModel({name: "secondary"}).save()
+        // await new RoomModel({name: "secondary"}).save()
 
         console.log(`Connected to DB: ${process.env.DB}.`)
         logCustom(`Connected to DB: ${process.env.DB}.`)
@@ -47,8 +47,12 @@ server.use(express.json())
 server.use(logReq)
 
 socket.on("connection", (socket) => {
+    let path = socket.handshake.headers.referer.split("/chats/")[1]
+    socket.join(path)
     logCustom(`accepted connection from ${socket.handshake.address}`)
+    
     socket.on("disconnect", () => {
+        socket.leave(path)
         logCustom(`lost connection from ${socket.handshake.address}`)
     })
 
@@ -63,13 +67,13 @@ socket.on("connection", (socket) => {
         })
         await room.save()
 
-        socket.broadcast.emit("new", msg)
+        socket.to(path).emit("new", msg)
     })
 
     socket.on("typing", (author) => {
         if (usersTyping.indexOf(author) < 0) {
             usersTyping.push(author)
-            socket.broadcast.emit("typing", usersTyping)
+            socket.to(path).emit("typing", usersTyping)
         }
     })
 
@@ -78,14 +82,14 @@ socket.on("connection", (socket) => {
             return;
         }
         usersTyping.splice(usersTyping.indexOf(author), 1)
-        socket.broadcast.emit("stop typing",usersTyping)
+        socket.to(path).emit("stop typing",usersTyping)
     })
 
     socket.on("room change", async (name, id) => {
         let room = await RoomModel.findById(id)
         room.name = name
         await room.save()
-        socket.broadcast.emit("room change", name)
+        socket.to(path).emit("room change", name)
     })
 })
 
@@ -100,7 +104,21 @@ server.get("*", async (req, res) => {
     res.render('404')
 })
 
+// let r = await RoomModel.findOne({name: "hello world"})
+// r.messages = []
+
+// for (let i = 1; i <= 50; i++) {
+//     r.messages.push({
+//         date: getDate(),
+//         epochTime: Date.now(),
+//         content: `${i}`,
+//         author: "61f9afbf55ba5178e015a63b"
+//     })
+// }
+
+// await r.save()
+
 HTTPServer.listen(process.env.PORT, ()=> {
     console.log("Started HTTP server. Port:", process.env.PORT)
-    logCustom("Started HTTP server. Port:", process.env.PORT)
+    logCustom("Started HTTP server. Port: " + process.env.PORT)
 })
