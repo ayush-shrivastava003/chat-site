@@ -249,3 +249,7 @@ input[type="button"].bare:hover {
     left : 50%;
     transform : translate(-50%, 0px);
 } */
+
+.soft-hide {
+    color : var(--main-color);
+}

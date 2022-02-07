@@ -47,7 +47,7 @@ function getUsersTyping(author, usersTyping) {
     } else {
         authors = usersTyping.join(", ") + " are typing..."
     }
-    return authors === "" ? " " : authors;
+    return authors === "" ? "a" : authors;
 }
 
 function append(content, author) {
@@ -131,7 +131,9 @@ socket.on("typing", (authorsTyping) => {
 })
 
 socket.on("stop typing", (usersTyping) => {
-    typingLabel.innerHTML = getUsersTyping(getUser(), usersTyping)
+    const v = getUsersTyping(getUser(), usersTyping);
+    typingLabel.textContent = v;
+    typingLabel.className = v === "a" ? "soft-hide" : "";
 })
 
 socket.on("room change", (name) => {
