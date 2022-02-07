@@ -139,3 +139,7 @@ socket.on("stop typing", (usersTyping) => {
 socket.on("room change", (name) => {
     chatTitle.value = name
 })
+
+window.onbeforeunload = (e) => {
+    socket.emit("stop typing", getUser());
+}
