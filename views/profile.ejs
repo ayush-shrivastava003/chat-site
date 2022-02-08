@@ -5,9 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../assets/icon.png">
+    <link rel="stylesheet" href="../assets/style.css">
     <title>profile - chat-site</title>
 </head>
 <body>
-    <h1>my profile</h1>
+    <h1 id="profile-title">my profile</h1>
+    <div id="account-info">
+        <img id="avatar" src="/<%= user.avatar %>">
+        <p id="username"><%= user.username %></p>
+        <p id="email">dummy@email.co</p>
+    </div>
 </body>
 </html>

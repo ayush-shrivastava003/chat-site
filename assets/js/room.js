@@ -56,7 +56,7 @@ function append(content, author) {
     let authorDate = document.createElement("div")
 
     messageDiv.className = "message"
-    messageContent.innerHTML = content
+    messageContent.innerText = content
     messageContent.className = "content"
     authorDate.className = "author-date"
     authorDate.innerHTML = `<p>${author}</p> <p class="date">${getDate()}</p>`

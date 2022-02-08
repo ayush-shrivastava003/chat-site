@@ -26,7 +26,10 @@ async function verifyLogin(req, res, next) {
 }
 
 AccountRouter.get('/', verifyLogin, async (req, res) => {
-    return res.render('profile')
+    let token = req.cookies.info
+    let user = await UserModel.findById(getToken(token))
+    console.log(user)
+    return res.render('profile', {user})
 })
 
 AccountRouter.get('/register', (req, res) => {
@@ -39,6 +42,10 @@ AccountRouter.get('/login', (req, res) => {
 
 AccountRouter.post('/register', async (req, res) => {
     let {username, password} = req.body
+
+    if (UserModel.exists({username: username})) {
+        return res.json({status: "error", error: `The username ${username} is already in use!`})
+    }
 
     if (password.length >= 8) {
         let pwd = await bcrypt.hash(password, 10)
