@@ -116,7 +116,7 @@ a {color: var(--font-color);}
     width: 100%;
     z-index : 10;
     background-color : var(--main-color);
-    height : 10vh;
+    height : calc(10vh - 6px);
 }
 
 #entry {
@@ -141,7 +141,7 @@ a {color: var(--font-color);}
     margin-top: 1%;
     /* width: 300px; */
     border-radius: 5px;
-    padding: 5px;
+    /* padding: 5px; */
     transition: 0.25s;
     /* height : 0px; */
 }
@@ -252,7 +252,9 @@ input[type="button"].bare:hover {
 p#typing-label {
     /* position : absolute; */
     /* left : 50%; */
-    transform : translate(0px, -50%);
+    /* transform : translate(0px, -50%); */
+    position : relative;
+    top : -20px;
 }
 
 .soft-hide {
