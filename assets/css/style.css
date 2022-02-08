@@ -116,6 +116,7 @@ a {color: var(--font-color);}
     width: 100%;
     z-index : 10;
     background-color : var(--main-color);
+    height : 10vh;
 }
 
 #entry {
