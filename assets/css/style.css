@@ -117,7 +117,7 @@ a {color: var(--font-color);}
     z-index : 10;
     background-color : var(--main-color);
     border-top : solid dimgray 2px;
-    height : calc(10vh - 0px);
+    height : calc(10vh - 4px);
 }
 
 #entry {
@@ -135,13 +135,17 @@ a {color: var(--font-color);}
     padding-left: 5%;
     overflow: hidden scroll;
     height: 80vh;
-    top : 10vh;
+    top : calc(10vh + 2px);
+    position : absolute;
+    width : -webkit-fill-available;
 }
 
 .message {
     margin-top: 1%;
     /* width: 300px; */
     border-radius: 5px;
+    padding-left : 5px;
+    padding-top : 5px;
     /* padding: 5px; */
     transition: 0.25s;
     /* height : 0px; */
@@ -263,6 +267,7 @@ p#typing-label {
 }
 
 #top-bar {
+    width : 100vw;
     height : 10vh;
     position : absolute;
     left : 0px;
