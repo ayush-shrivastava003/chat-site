@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import path from 'path'
-import {logReq, logCustom, logErr, getDate} from './logger.js'
+import {logReq, logCustom, logErr, getDate, logMsg} from './logger.js'
 import RoomModel from './models/room_model.js'
 import http from 'http'
 import {Server} from 'socket.io'
@@ -59,13 +59,15 @@ socket.on("connection", (socket) => {
     socket.on("message", async (msg) => {
 
         let room = await RoomModel.findById(msg.roomId)
-        room.messages.push({
+        const data = {
             date: getDate(),
             epochTime: Date.now(),
             content: msg.content,
             author: getToken(JSON.parse(cookie.parse(socket.handshake.headers.cookie).info).token)
-        })
+        };
+        room.messages.push(data);
         await room.save()
+        logMsg(data, msg.roomId);
 
         socket.to(path).emit("new", msg)
     })

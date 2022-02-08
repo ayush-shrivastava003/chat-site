@@ -28,4 +28,8 @@ function logErr(msg) {
     fs.appendFile('logs.log', `ERROR: ${getDate()} @ ${new Date().toTimeString()}: ${msg}\n`, () => {})
 }
 
-export {logCustom, logReq, logErr, getDate}
+function logMsg(msg, roomId) {
+    fs.appendFile("msgs.log", `MSG: from="${msg.author}" date="${msg.date}" roomId="${roomId}"`);
+}
+
+export {logCustom, logReq, logErr, getDate, logMsg}
