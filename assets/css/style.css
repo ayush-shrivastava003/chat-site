@@ -132,7 +132,8 @@ a {color: var(--font-color);}
     margin-top: 2.5%;
     padding-left: 5%;
     overflow: hidden scroll;
-    height: 80%;
+    height: 80vh;
+    top : 10vh;
 }
 
 .message {
@@ -140,7 +141,8 @@ a {color: var(--font-color);}
     /* width: 300px; */
     border-radius: 5px;
     padding: 5px;
-    transition: 0.25s
+    transition: 0.25s;
+    /* height : 0px; */
 }
 
 .message:hover {
@@ -246,11 +248,11 @@ input[type="button"].bare:hover {
     /* color: var(--font-color) */
 }
 
-/* p#typing-label {
-    position : absolute;
-    left : 50%;
-    transform : translate(-50%, 0px);
-} */
+p#typing-label {
+    /* position : absolute; */
+    /* left : 50%; */
+    transform : translate(0px, -50%);
+}
 
 .soft-hide {
     color : var(--main-color);
