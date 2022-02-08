@@ -29,7 +29,7 @@ function logErr(msg) {
 }
 
 function logMsg(msg, roomId) {
-    fs.appendFile("msgs.log", `MSG: from="${msg.author}" date="${msg.date}" roomId="${roomId}"`, () => {});
+    fs.appendFile("msgs.log", `MSG: from="${msg.author}" date="${msg.date}" roomId="${roomId}"\n`, () => {});
 }
 
 export {logCustom, logReq, logErr, getDate, logMsg}
