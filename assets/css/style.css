@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Hind&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;700&family=Inconsolata&display=swap');
 
 :root {
     --main-font: "Hind";
@@ -175,6 +175,11 @@ a {color: var(--font-color);}
 
 .author-date p {
     display: inline;
+    font-weight: 500;
+}
+
+.content {
+    margin-top: 0.5%;
 }
 
 .date {
@@ -274,4 +279,25 @@ p#typing-label {
     left : 0px;
     top : 0px;
     border-bottom : solid dimgray 2px;
+}
+
+#new-room {
+    height: 50px;
+    width: 150px;
+    color: var(--font-color);
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    background-color: #1f1d12;
+    box-shadow: inset 0 0 0 0 var(--secondary-color);
+    -webkit-transition: ease-out 0.5s;
+    -moz-transition: ease-out 0.5s;
+    transition: 0.5s;
+    cursor: pointer
+
+}
+
+#new-room:hover {
+    /* box-shadow: inset 150px 0 0 0 rgb(77, 104, 126); */
+    box-shadow: inset 150px 0 0 0 var(--secondary-color-highlight);
 }

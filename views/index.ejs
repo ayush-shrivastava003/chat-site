@@ -13,11 +13,21 @@
     <div id="main-content">
         <div id="gaming">
             <h1 id="welcome">Welcome to chat-site.</h1>
-            <p><a id="signup" href="/account/register">Sign up</a> to start chatting. Already have an account? <a href="/account/login">Log in</a> here.</p>
+               <% if (isLoggedIn) { %>
+                <button id="new-room" onclick="window.location.href='/chats'">Open your chats</button>
+                <% } else { %>
+                    <button id="new-room" onclick="window.location.href='/account/register'">Sign up today</button>
+                <% } %>
         </div>
         <div id="more-info">
             <h1>chat-site</h1>
-            <p>chat-site is a web-based messaging app made by <a target="_blank" href="https://github.com/ayush-shrivastava003">ayush-shrivastava003</a> on GitHub.</p>
+            <p>
+                chat-site is a web-based messaging app made by 
+                <a target="_blank" href="https://github.com/ayush-shrivastava003">ayush-shrivastava003</a>
+                and
+                <a target="_blank" href="https://github.com/tsj845">tsj-845</a>
+                 on GitHub.
+            </p>
 
             <h1>dependencies</h1>
                 <p>Web server framework - Express</p>

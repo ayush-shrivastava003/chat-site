@@ -96,7 +96,9 @@ socket.on("connection", (socket) => {
 })
 
 server.get('/', async (req, res) => {
-    res.render('index')
+    let isLoggedIn = req.cookies.info == undefined ? false : true
+    console.log(isLoggedIn)
+    res.render('index', {isLoggedIn})
 })
 
 server.use('/chats', RoomRouter)

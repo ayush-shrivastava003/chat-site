@@ -13,7 +13,7 @@ function getToken(token) {
 async function verifyLogin(req, res, next) {
     let info = req.cookies.info
     info = decodeURIComponent(info)
-
+    console.log(info, typeof info)
     if (info !== "undefined") {
         let token = JSON.parse(info).token
         if (!token || // if token expired/never existed
