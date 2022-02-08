@@ -131,7 +131,7 @@ a {color: var(--font-color);}
 }
 
 #message-container {
-    margin-top: 2.5%;
+    /* margin-top: 2.5%; */
     padding-left: 5%;
     overflow: hidden scroll;
     height: 80vh;
