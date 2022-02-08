@@ -116,7 +116,8 @@ a {color: var(--font-color);}
     width: 100%;
     z-index : 10;
     background-color : var(--main-color);
-    height : calc(10vh - 6px);
+    border-top : solid dimgray 2px;
+    height : calc(10vh - 0px);
 }
 
 #entry {
@@ -165,7 +166,7 @@ a {color: var(--font-color);}
 #message-container::-webkit-scrollbar-thumb:hover {
     background-color: hsl(231, 9%, 35%);
     border-radius: 5px;
-    }
+}
 
 .author-date p {
     display: inline;
@@ -259,4 +260,12 @@ p#typing-label {
 
 .soft-hide {
     color : var(--main-color);
+}
+
+#top-bar {
+    height : 10vh;
+    position : absolute;
+    left : 0px;
+    top : 0px;
+    border-bottom : solid dimgray 2px;
 }

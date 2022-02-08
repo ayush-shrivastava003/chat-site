@@ -14,12 +14,14 @@
     <script defer src="../assets/js/room.js"></script>
 </head>
 <body>
-    <input type="button" id="back-btn" value="back" onclick="window.location.pathname='/chats'" class="bare">
-    <input type="text" id="chat-title" value="<%=roomName%>" spellcheck="false">
-    <div id="message-container" style="border-top:solid dimgray 2px;"> 
+    <div id="top-bar">
+        <input type="button" id="back-btn" value="back" onclick="window.location.pathname='/chats'" class="bare">
+        <input type="text" id="chat-title" value="<%=roomName%>" spellcheck="false">
+    </div>
+    <div id="message-container"> 
         <%- include("messages", {messages: messages, roomId: roomId, roomName: roomName}) %>
     </div>
-    <div id="entry-container" style="border-top:solid dimgray 2px;">
+    <div id="entry-container">
         <input type="file" id="file-upload-hidden"style="display: none;">
         <button id="file-upload">+</button>
         <input id="entry" type="text" placeholder="send a message to <%= roomName %>">
