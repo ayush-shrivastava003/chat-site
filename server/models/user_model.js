@@ -14,6 +14,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false,
         default: "assets/avatars/default.png"
+    },
+    about: {
+        type: String,
+        required: false,
+        default: "I am shy"
+    },
+    bio: {
+        type: String,
+        required: false,
+        default: "I have no life"
     }
 })
 
