@@ -1,0 +1,23 @@
+a.room-link {
+    transition : color 0.25s;
+}
+
+a.room-link:link {
+    color : var(--font-color);
+}
+
+a.room-link:link:hover {
+    color : var(--secondary-color-highlight);
+}
+
+a.room-link:active {
+    color : var(--dark-color);
+}
+
+a.room-link:visited {
+    color : var(--secondary-color);
+}
+
+a.room-link:visited:hover {
+    color : var(--secondary-color-highlight);
+}
