@@ -12,6 +12,8 @@ import {AccountRouter, getToken} from './routes/account_router.js'
 import {dirname} from 'path'
 import {fileURLToPath} from 'url'
 import cookie from 'cookie'
+/**@type {Schema} */
+import UserModel from './models/user_model.js'
 
 dotenv.config()
 mongoose.connect(
@@ -93,6 +95,10 @@ socket.on("connection", (socket) => {
         await room.save()
         socket.to(path).emit("room change", name)
     })
+
+    socket.on("dump", async () => {
+        console.log(UserModel.find());
+    });
 })
 
 server.get('/', async (req, res) => {
