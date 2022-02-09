@@ -105,9 +105,9 @@ chatTitle.addEventListener("keyup", (event) => {resize(event.keyCode)})
 msgContainer.addEventListener("scroll", async () => {
     if (msgContainer.scrollTop == 0) {
         const o = msgContainer.scrollHeight;
-        console.log("sending req now")
+        // console.log("sending req now")
         let loaded = document.getElementsByClassName("message").length
-        console.log(loaded)
+        // console.log(loaded)
 
         let messages = await fetch(`/chats/${roomId}/load`, {
                 method: 'POST',
@@ -115,7 +115,7 @@ msgContainer.addEventListener("scroll", async () => {
                 body: JSON.stringify({offset: 0, loaded: loaded})
             })
         messages = await messages.text()
-        console.log(`inserting ${messages} into msgContainer div`)
+        // console.log(`inserting ${messages} into msgContainer div`)
         msgContainer.innerHTML = messages + msgContainer.innerHTML
         msgContainer.scroll({left:0, top:msgContainer.scrollHeight - o, behavior:"instant"});
     }
