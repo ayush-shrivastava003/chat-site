@@ -175,7 +175,8 @@ a {color: var(--font-color);}
 
 .author-date p {
     display: inline;
-    font-weight: 500;
+    color : #aaa;
+    /* font-weight: 500; */
 }
 
 .content {
