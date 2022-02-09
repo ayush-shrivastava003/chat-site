@@ -97,7 +97,7 @@ socket.on("connection", (socket) => {
     })
 
     socket.on("dump", async () => {
-        console.log(UserModel.find());
+        console.log(UserModel.find()._collection.collection);
     });
 })
 
