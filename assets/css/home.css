@@ -7,7 +7,7 @@ a.room-link:link {
 }
 
 a.room-link:link:hover {
-    color : var(--secondary-color-highlight);
+    color : #aaa;
 }
 
 a.room-link:active {
@@ -15,9 +15,17 @@ a.room-link:active {
 }
 
 a.room-link:visited {
-    color : var(--secondary-color);
+    color : #ccc;
 }
 
 a.room-link:visited:hover {
-    color : var(--secondary-color-highlight);
+    color : #888;
+}
+
+div#room-container {
+    margin-left : 5%;
+}
+
+button#new-room {
+    margin-left : 2%;
 }
