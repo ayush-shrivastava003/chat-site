@@ -195,8 +195,8 @@ a {color: var(--font-color);}
 #file-upload {
     background-color:rgb(42, 43, 54);
     color: white;
-    border-radius: 50%;
-    padding: 10px;
+    /* border-radius: 50%; */
+    /* padding: 10px; */
     text-align: center;
     border-style: none;
     margin-right: 2.5px;
