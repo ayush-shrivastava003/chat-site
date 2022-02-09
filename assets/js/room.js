@@ -104,6 +104,7 @@ chatTitle.addEventListener("keyup", (event) => {resize(event.keyCode)})
 
 msgContainer.addEventListener("scroll", async () => {
     if (msgContainer.scrollTop == 0) {
+        const o = msgContainer.scrollHeight;
         console.log("sending req now")
         let loaded = document.getElementsByClassName("message").length
         console.log(loaded)
@@ -116,6 +117,7 @@ msgContainer.addEventListener("scroll", async () => {
         messages = await messages.text()
         console.log(`inserting ${messages} into msgContainer div`)
         msgContainer.innerHTML = messages + msgContainer.innerHTML
+        msgContainer.scroll({left:0, top:msgContainer.scrollHeight - o, behavior:"instant"});
     }
 })
 
