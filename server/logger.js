@@ -28,8 +28,12 @@ function logErr(msg) {
     fs.appendFile('logs.log', `ERROR: ${getDate()} @ ${new Date().toTimeString()}: ${msg}\n`, () => {})
 }
 
-function logMsg(msg, roomId) {
-    fs.appendFile("msgs.log", `MSG: from="${msg.author}" date="${msg.date}" time="${new Date().toTimeString()}" roomId="${roomId}"\n`, () => {});
+function logMsg(msg) {
+    fs.appendFile("msgs.log", `MSG: from="${msg.author}" date="${msg.date}" time="${new Date().toTimeString()}" roomId="${msg.roomId}"\n`, () => {});
 }
 
-export {logCustom, logReq, logErr, getDate, logMsg}
+function logConnect(msg) {
+    fs.appendFile('connect.log', `${msg}\n`, () => {})
+}
+
+export {logCustom, logReq, logErr, getDate, logMsg, logConnect}

@@ -13,7 +13,6 @@ function getToken(token) {
 async function verifyLogin(req, res, next) {
     let info = req.cookies.info
     info = decodeURIComponent(info)
-    console.log(info, typeof info)
     if (info !== "undefined") {
         let token = JSON.parse(info).token
         if (!token || // if token expired/never existed
@@ -28,7 +27,6 @@ async function verifyLogin(req, res, next) {
 AccountRouter.get('/', verifyLogin, async (req, res) => {
     let token = req.cookies.info
     let user = await UserModel.findById(getToken(token))
-    console.log(user)
     return res.render('profile', {user})
 })
 

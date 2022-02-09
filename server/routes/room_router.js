@@ -20,8 +20,14 @@ async function getAuthors(messages) {
 }
 
 RoomRouter.get('/', async (req, res) => {
-    let rooms = await RoomModel.find()
+    let rooms = await RoomModel.find().sort({})
     res.render('home', {rooms: rooms})
+})
+
+RoomRouter.get('/new', async (req, res) => {
+    let newRoom = new RoomModel({name: "New Room"})
+    await newRoom.save()
+    return res.redirect(`/chats/${newRoom._id}`)
 })
 
 RoomRouter.get('/:room', async (req, res) => {
@@ -39,7 +45,6 @@ RoomRouter.get('/:room', async (req, res) => {
 RoomRouter.post('/:room/load', async (req, res) => {
     let id = req.params.room
     let {offset, loaded} = req.body
-    console.log(req.body)
 
     if (
         !(mongoose.isValidObjectId(id))
@@ -50,7 +55,6 @@ RoomRouter.post('/:room/load', async (req, res) => {
     let room = await RoomModel.findById(id)
     let messages = room.messages
     let len = messages.length
-    console.log(`${len}-${loaded} is ${len-loaded}`)
     if (len-loaded < 25) {
         messages.splice(len-loaded, loaded)
     } else {
@@ -59,9 +63,6 @@ RoomRouter.post('/:room/load', async (req, res) => {
     
     messages = await getAuthors(messages)
     return res.render("messages", {roomId: id, messages: messages, roomName: room.name})
-    
-
-
 })
 
 export default RoomRouter

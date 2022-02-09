@@ -281,7 +281,7 @@ p#typing-label {
     border-bottom : solid dimgray 2px;
 }
 
-#new-room {
+.slide-button {
     height: 50px;
     width: 150px;
     color: var(--font-color);
@@ -297,7 +297,16 @@ p#typing-label {
 
 }
 
-#new-room:hover {
+.slide-button:hover {
     /* box-shadow: inset 150px 0 0 0 rgb(77, 104, 126); */
     box-shadow: inset 150px 0 0 0 var(--secondary-color-highlight);
 }
+
+#main-content {
+    margin-left: 2.5%;
+    /* text-indent: 8; */
+}
+
+/* #new-room {
+    margin-left: 2.5%
+} */

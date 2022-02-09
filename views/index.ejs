@@ -10,11 +10,11 @@
 </head>
 <body>
     <img id="background" src="../assets/images/background.jpeg">
-    <div id="main-content">
+    <!-- <div id="main-content"> -->
         <div id="gaming">
             <h1 id="welcome">Welcome to chat-site.</h1>
                <% if (isLoggedIn) { %>
-                <button id="new-room" onclick="window.location.href='/chats'">Open your chats</button>
+                <button class="slide-button" id="new-room" onclick="window.location.href='/chats'">Open your chats</button>
                 <% } else { %>
                     <button id="new-room" onclick="window.location.href='/account/register'">Sign up today</button>
                 <% } %>
@@ -36,6 +36,6 @@
                 <p>Web sockets - socket.io</p>
                 <p>View engine - EJS</p>
         </div>
-    </div>
+    <!-- </div> -->
 </body>
 </html>

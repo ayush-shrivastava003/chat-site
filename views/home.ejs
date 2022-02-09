@@ -9,14 +9,17 @@
     <title>home - chat-site</title>
 </head>
 <body>
-    <h1 id="chats-title">Chats</h1>
-    <button id="new-room">Make a new room</button>
-    <div id='room-container'>
-        <% rooms.map(room => { %>
-            <div class="room">
-                <a href="/chats/<%=room._id%>"><%= room.name %></h3>
-            </div>
-        <% }) %>
+    <div id="main-content">
+        <h1 id="chats-title">Chats</h1>
+        <button class="slide-button" id="new-room" onclick="window.location.href = '/chats/new'">Make a new room</button>
+        <div id='room-container'>
+            <% rooms.map(room => { %>
+                <!-- <div class="room"> -->
+                    <a href="/chats/<%=room._id%>"><%= room.name %></a>
+                    <br>
+                <!-- </div> -->
+            <% }) %>
+        </div>
     </div>
 </body>
 </html>

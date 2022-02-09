@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import path from 'path'
-import {logReq, logCustom, logErr, getDate, logMsg} from './logger.js'
+import {logReq, logCustom, logErr, getDate, logMsg, logConnect} from './logger.js'
 import RoomModel from './models/room_model.js'
 import http from 'http'
 import {Server} from 'socket.io'
@@ -50,11 +50,11 @@ server.use(logReq)
 socket.on("connection", (socket) => {
     let path = socket.handshake.headers.referer.split("/chats/")[1]
     socket.join(path)
-    logCustom(`accepted connection from ${socket.handshake.address}`)
+    logConnect(`accepted connection from ${socket.handshake.address}`)
     
     socket.on("disconnect", () => {
         socket.leave(path)
-        logCustom(`lost connection from ${socket.handshake.address}`)
+        logConnect(`lost connection from ${socket.handshake.address}`)
     })
 
     socket.on("message", async (msg) => {
@@ -68,7 +68,7 @@ socket.on("connection", (socket) => {
         };
         room.messages.push(data);
         await room.save()
-        logMsg(data, msg.roomId);
+        logMsg({author: await UserModel.findById(data.author), date: data.date, roomId: data._id});
 
         socket.to(path).emit("new", msg)
     })
@@ -98,7 +98,6 @@ socket.on("connection", (socket) => {
 
 server.get('/', async (req, res) => {
     let isLoggedIn = req.cookies.info == undefined ? false : true
-    console.log(isLoggedIn)
     res.render('index', {isLoggedIn})
 })
 
@@ -109,20 +108,6 @@ server.get("/data-migration", async (req, res) => {return res.render("data-migra
 server.get("*", async (req, res) => {
     res.render('404')
 })
-
-// let r = await RoomModel.findOne({name: "hello world"})
-// r.messages = []
-
-// for (let i = 1; i <= 50; i++) {
-//     r.messages.push({
-//         date: getDate(),
-//         epochTime: Date.now(),
-//         content: `${i}`,
-//         author: "61f9afbf55ba5178e015a63b"
-//     })
-// }
-
-// await r.save()
 
 HTTPServer.listen(process.env.PORT, ()=> {
     console.log("Started HTTP server. Port:", process.env.PORT)

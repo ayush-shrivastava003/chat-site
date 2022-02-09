@@ -25,7 +25,12 @@ const roomSchema = new mongoose.Schema({
             author: {
                 type: mongoose.Schema.ObjectId,
                 ref: 'User'
-    }}]
+    }}],
+    picture: {
+        type: String,
+        default: "assets/avatars/default.png",
+        required: false,
+    }
 })
 
 const RoomModel = mongoose.model('Room', roomSchema)
