@@ -24,6 +24,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false,
         default: "I have no life"
+    },
+    account_status: {
+        type: String,
+        required: false,
+        default: "active"
     }
 })
 

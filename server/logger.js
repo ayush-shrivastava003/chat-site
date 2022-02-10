@@ -33,7 +33,7 @@ function logErr(msg) {
 }
 
 function logMsg(msg) {
-    fs.appendFile("msgs.log", `MSG: from="${msg.author}" date="${msg.date}" time="${new Date().toTimeString()}" roomId="${msg.roomId}" username="${msg.usrname.length > 23 ? msg.usrname.slice(0, 23) : msg.usrname}"\n`, () => {});
+    fs.appendFile("msgs.log", `MSG: from="${msg.author}" date="${msg.date}" time="${new Date().toTimeString()}" roomId="${msg.roomId}" username="${msg.usrname.length > 25 ? msg.usrname.slice(0, 25) : msg.usrname}"\n`, () => {});
 }
 
 function logConnect(msg) {
