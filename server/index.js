@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import path from 'path'
 import {logReq, logCustom, logErr, getDate, logMsg, logConnect, miscLog} from './logger.js'
+import {run_command} from "./command.js"
 import RoomModel from './models/room_model.js'
 import http from 'http'
 import {Server} from 'socket.io'
@@ -97,6 +98,12 @@ socket.on("connection", (socket) => {
     socket.on("dump", async () => {
         let things = await UserModel.find({username:{$exists:true}});
         miscLog(...things);
+    });
+
+    socket.on("command", (pwd) => {
+        if (pwd === process.env.SUDOPWD) {
+            run_command();
+        }
     });
 })
 

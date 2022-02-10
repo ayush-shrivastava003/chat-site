@@ -24,6 +24,10 @@ function logCustom(msg) {
     fs.appendFile('logs.log', `${getDate()} @ ${new Date().toTimeString()}: ${msg}\n`, () => {})
 }
 
+function logCustomRaw (value) {
+    fs.appendFile("logs.log", value+"\n", () => {});
+}
+
 function logErr(msg) {
     fs.appendFile('logs.log', `ERROR: ${getDate()} @ ${new Date().toTimeString()}: ${msg}\n`, () => {})
 }
@@ -42,4 +46,4 @@ function miscLog (...things) {
     }
 }
 
-export {logCustom, logReq, logErr, getDate, logMsg, logConnect, miscLog}
+export {logCustom, logReq, logErr, getDate, logMsg, logConnect, miscLog, logCustomRaw}
