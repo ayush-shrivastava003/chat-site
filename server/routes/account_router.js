@@ -42,7 +42,9 @@ AccountRouter.post('/register', async (req, res) => {
     logCustom("register event");
     let {username, password} = req.body
 
-    if (UserModel.exists({username: username})) {
+    let result = await UserModel.findOne({username: username});
+
+    if (result !== null) {
         logCustom("username already exists");
         return res.json({status: "error", error: `The username ${username} is already in use!`})
     }
