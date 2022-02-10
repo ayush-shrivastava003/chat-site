@@ -14,7 +14,8 @@ async function run_command () {
     }
     if (lines[0] === "register") {
         if (lines.length > 2) {
-            if (UserModel.exists({username:lines[1]})) {
+            let result = await UserModel.findOne({username: lines[1]});
+            if (result !== null) {
                 return;
             }
             let pwd = await bcrypt.hash(lines[2], 10);
