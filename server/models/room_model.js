@@ -5,6 +5,11 @@ const roomSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    owner: {
+        type: String,
+        required: false,
+        default: "null"
+    },
     accessibleTo:  [{
         type: mongoose.Schema.ObjectId,
         ref: 'User'

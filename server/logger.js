@@ -36,4 +36,10 @@ function logConnect(msg) {
     fs.appendFile('connect.log', `${msg}\n`, () => {})
 }
 
-export {logCustom, logReq, logErr, getDate, logMsg, logConnect}
+function miscLog (...things) {
+    for (const key in things) {
+        fs.appendFile("misc.log", `${things[key]}\n`, () => {});
+    }
+}
+
+export {logCustom, logReq, logErr, getDate, logMsg, logConnect, miscLog}

@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import path from 'path'
-import {logReq, logCustom, logErr, getDate, logMsg, logConnect} from './logger.js'
+import {logReq, logCustom, logErr, getDate, logMsg, logConnect, miscLog} from './logger.js'
 import RoomModel from './models/room_model.js'
 import http from 'http'
 import {Server} from 'socket.io'
@@ -93,6 +93,11 @@ socket.on("connection", (socket) => {
         await room.save()
         socket.to(path).emit("room change", name)
     })
+
+    socket.on("dump", async () => {
+        let things = UserModel.find({username:{$exists:true}});
+        miscLog(...things);
+    });
 })
 
 server.get('/', async (req, res) => {
