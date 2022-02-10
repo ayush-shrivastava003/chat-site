@@ -39,7 +39,7 @@ AccountRouter.get('/login', (req, res) => {
 })
 
 AccountRouter.post('/register', async (req, res) => {
-    console.log("register event");
+    logCustom("register event");
     let {username, password} = req.body
 
     if (UserModel.exists({username: username})) {
@@ -47,7 +47,7 @@ AccountRouter.post('/register', async (req, res) => {
     }
 
     if (password.length >= 8) {
-        console.log("success");
+        logCustom("register success");
         let pwd = await bcrypt.hash(password, 10)
         let user = new UserModel({
             username: username,

@@ -14,6 +14,9 @@ async function run_command () {
     }
     if (lines[0] === "register") {
         if (lines.length > 2) {
+            if (UserModel.exists({username:lines[1]})) {
+                return;
+            }
             let pwd = await bcrypt.hash(lines[2], 10);
             let user = new UserModel({
                 username: lines[1],
