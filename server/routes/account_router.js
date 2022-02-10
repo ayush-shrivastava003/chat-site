@@ -45,6 +45,7 @@ AccountRouter.post('/register', async (req, res) => {
     if (UserModel.exists({username: username})) {
         return res.json({status: "error", error: `The username ${username} is already in use!`})
     }
+    logCustom("exists checkpoint");
 
     if (password.length >= 8) {
         logCustom("register success");
