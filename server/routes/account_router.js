@@ -39,6 +39,7 @@ AccountRouter.get('/login', (req, res) => {
 })
 
 AccountRouter.post('/register', async (req, res) => {
+    console.log("register event");
     let {username, password} = req.body
 
     if (UserModel.exists({username: username})) {
