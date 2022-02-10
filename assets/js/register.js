@@ -5,6 +5,7 @@ const form = document.getElementById('form')
 form.addEventListener('submit', async (event) => {
     event.preventDefault()
     if (username.value != '' && password.value != '') {
+        console.log("sent register request");
         let r = await fetch('/account/register', {
             method: 'POST',
             headers: {'Content-type': 'application/json'},

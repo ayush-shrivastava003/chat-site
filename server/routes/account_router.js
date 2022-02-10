@@ -46,6 +46,7 @@ AccountRouter.post('/register', async (req, res) => {
     }
 
     if (password.length >= 8) {
+        console.log("success");
         let pwd = await bcrypt.hash(password, 10)
         let user = new UserModel({
             username: username,
