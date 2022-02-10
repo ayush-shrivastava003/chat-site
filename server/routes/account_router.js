@@ -10,6 +10,11 @@ function getToken(token) {
     return JSON.parse(Buffer.from(token.split('.')[1], 'base64')).id
 }
 
+async function userExists (username) {
+    let result = await UserModel.findOne({username: username});
+    return result !== null;
+}
+
 async function verifyLogin(req, res, next) {
     let info = req.cookies.info
     info = decodeURIComponent(info)
@@ -42,9 +47,7 @@ AccountRouter.post('/register', async (req, res) => {
     logCustom("register event");
     let {username, password} = req.body
 
-    let result = await UserModel.findOne({username: username});
-
-    if (result !== null) {
+    if (await userExists(username)) {
         logCustom("username already exists");
         return res.json({status: "error", error: `The username ${username} is already in use!`})
     }
@@ -82,4 +85,4 @@ AccountRouter.post('/login', async (req, res) => {
     } else return res.status(400).json({status: 'error', error: 'Invalid username or password'})
 })
 
-export {AccountRouter, verifyLogin, getToken}
+export {AccountRouter, verifyLogin, getToken, userExists}
