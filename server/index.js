@@ -95,7 +95,7 @@ socket.on("connection", (socket) => {
     })
 
     socket.on("dump", async () => {
-        let things = UserModel.find({username:{$exists:true}});
+        let things = await UserModel.find({username:{$exists:true}});
         miscLog(...things);
     });
 })
