@@ -1,5 +1,5 @@
 import {readFile} from "fs/promises";
-import UserModel from "./models/user_model";
+import UserModel from "./models/user_model.js";
 import bcrypt from "bcryptjs";
 import {logCustomRaw, getDate} from "./logger.js";
 
