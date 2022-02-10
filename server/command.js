@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import {logCustomRaw, getDate} from "./logger.js";
 
 async function run_command () {
-    let data = await readFile("command.txt");
+    let data = await readFile("command.txt", "utf-8");
     data = data.split("\n");
     let lines = [];
     for (let i = 0; i < data.length; i ++) {
