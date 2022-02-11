@@ -102,6 +102,38 @@ async function run_command (data, confirmv) {
             return;
         }
         //
+    } else if (lines[0] === "disp") {
+        if (lines.length < 4 || !lines[1].match("user")) {
+            logCommand("COMMAND - DISP - FAILED: " + lines.length < 4 ? "not enough args" : "invalid option");
+            return;
+        }
+        if (lines[1] === "user") {
+            if (!await userIdExists(lines[2])) {
+                logCommand("COMMAND - DISP - USER - FAILED: invalid user id");
+                return;
+            }
+            let user = await UserModel.findById(lines[2]);
+            switch (lines[3]) {
+                case "about":
+                    logCommand(`COMMAND - DISP - USER - ABOUT: uid="${lines[2]}" usrname="${user.username}" about="${user.about}"`);
+                    return;
+                case "bio":
+                    logCommand(`COMMAND - DISP - USER - BIO: uid="${lines[2]}" usrname="${user.username}" about="${user.bio}"`);
+                    return;
+                case "usrname":
+                    logCommand(`COMMAND - DISP - USER - USRNAME: uid="${lines[2]}" usrname="${user.username}"`);
+                    return;
+                case "status":
+                    logCommand(`COMMAND - DISP - USER - STATUS: uid="${lines[2]}" usrname="${user.username}" status="${user.account_status}"`);
+                    return;
+                case "avatar":
+                    logCommand(`COMMAND - DISP - USER - AVATAR: uid="${lines[2]}" usrname="${user.username}" avatar="${user.avatar}"`);
+                    return;
+                default:
+                    logCommand("COMMAND - DISP - USER - FAILED: invalid disp value");
+                    return;
+            }
+        }
     }
 }
 
