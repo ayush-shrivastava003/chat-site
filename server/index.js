@@ -68,7 +68,7 @@ socket.on("connection", (socket) => {
         room.messages.push(data);
         await room.save()
         const usrname = await UserModel.findById(data.author);
-        logMsg({author: data.author, date: data.date, roomId: msg.roomId, usrname:usrname.username});
+        logMsg({author: data.author, date: data.date, roomId: msg.roomId, usrname:usrname.username, roomname:room.name});
 
         socket.to(path).emit("new", msg)
     })
