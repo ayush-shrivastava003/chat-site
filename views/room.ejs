@@ -16,6 +16,11 @@
     <script defer src="../assets/js/room.js"></script>
 </head>
 <body>
+    <dialog id="id-copy">
+        <p id="idcopy"></p>
+        <br><br>
+        <input type="button" value="close" onclick="document.getElementById('id-copy').close()">
+    </dialog>
     <div id="top-bar">
         <input type="button" id="back-btn" value="back" onclick="window.location.pathname='/chats'" class="bare">
         <input type="text" id="chat-title" value="<%=roomName%>" spellcheck="false">

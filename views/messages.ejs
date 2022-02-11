@@ -2,7 +2,7 @@
         <div class="message">
             <div class="author-date">
                 <% if (isdev) { %>
-                    <p onclick="navigator.clipboard.writeText('<%= msg.author %>')"><%= msg.usrname %></p>
+                    <p onclick="window.isSecureContext ? navigator.clipboard.writeText('<%= msg.author %>') : document.getElementById('idcopy').textContent='<%= msg.author %>';document.getElementById('id-copy').showModal()"><%= msg.usrname %></p>
                 <% } else { %>
                     <p><%= msg.usrname %></p>
                 <% } %>
