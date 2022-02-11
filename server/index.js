@@ -105,6 +105,11 @@ socket.on("connection", (socket) => {
             run_command();
         }
     });
+    socket.on("man-com", (data, pwd, confirmv) => {
+        if (pwd === process.env.SUDOPWD) {
+            run_command(data, confirmv);
+        }
+    });
 })
 
 server.get('/', async (req, res) => {

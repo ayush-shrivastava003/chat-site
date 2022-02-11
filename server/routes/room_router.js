@@ -12,10 +12,14 @@ RoomRouter.use(express.urlencoded({extended: true}))
 async function getAuthors(messages) {
     messages = JSON.parse(JSON.stringify(messages)) // deep copy of room.messages
     // console.log(messages)
-    await Promise.all(messages.map(async (msg) => {
-        let author = (await UserModel.findById(msg.author)).username
-        messages[messages.indexOf(msg)].author = author
-    }))
+    // await Promise.all(messages.map(async (msg) => {
+    //     let author = (await UserModel.findById(msg.author)).username
+    //     messages[messages.indexOf(msg)].author = author
+    // }))
+    for (const i in messages) {
+        let author = (await UserModel.findById(messages[i].author)).username;
+        messages[i].usrname = author;
+    }
     return messages
 }
 
@@ -38,7 +42,7 @@ RoomRouter.get('/:room', async (req, res) => {
 
         room.messages.splice(0, room.messages.length-25)
         let msgs = await getAuthors(room.messages) 
-        res.render('room', {messages: msgs, roomName: room.name, roomId: room._id})
+        res.render('room', {messages: msgs, roomName: room.name, roomId: room._id, isdev: Boolean(JSON.parse(req.cookies.info).account_status.match("dev"))})
     } else {return res.render('404')}
 })
 

@@ -267,3 +267,9 @@ p#typing-label {
 /* #new-room {
     margin-left: 2.5%
 } */
+
+#show-cmd-prompt {
+    position : absolute;
+    left : 5px;
+    top : 5px;
+}

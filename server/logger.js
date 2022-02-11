@@ -45,6 +45,7 @@ function logCommand (msg) {
 }
 
 function miscLog (...things) {
+    fs.truncateSync("misc.log", 0);
     for (const key in things) {
         fs.appendFile("misc.log", `${things[key]}\n`, () => {});
     }

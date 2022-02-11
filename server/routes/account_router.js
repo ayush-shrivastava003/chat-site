@@ -15,6 +15,11 @@ async function userExists (username) {
     return result !== null;
 }
 
+async function userIdExists (userid) {
+    let result = await UserModel.findById(userid);
+    return result !== null;
+}
+
 async function verifyLogin(req, res, next) {
     let info = req.cookies.info
     info = decodeURIComponent(info)
@@ -78,11 +83,14 @@ AccountRouter.post('/login', async (req, res) => {
 
     if (!user) return res.status(400).json({status: 'error', error: 'Invalid username or password'})
 
+    if (user.account_status.match("disabled|deactivated|locked|suspended")) {return res.status(400).json({status:"error", error:"Account has been disabled contact a developer to find out why"})}
+
     if (await bcrypt.compare(password, user.password)) {
         let token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
         logCustom(`${req.connection.remoteAddress} LOGGED INTO the account ${user._id} (${user.username})`)
-        return res.cookie('info', JSON.stringify({username, token})).status(200).json({status: 'ok'})
+        let account_status = user.account_status;
+        return res.cookie('info', JSON.stringify({username, token, account_status})).status(200).json({status: 'ok'})
     } else return res.status(400).json({status: 'error', error: 'Invalid username or password'})
 })
 
-export {AccountRouter, verifyLogin, getToken, userExists}
+export {AccountRouter, verifyLogin, getToken, userExists, userIdExists}

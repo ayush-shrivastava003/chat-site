@@ -4,6 +4,33 @@ msgContainer.scrollTop = msgContainer.scrollHeight;
 const typingLabel = document.getElementById("typing-label")
 const chatTitle = document.getElementById("chat-title")
 const entry = document.getElementById("entry")
+const command_prompt_btn = document.getElementById("show-cmd-prompt");
+/**@type {HTMLDialogElement} */
+const command_prompt = document.getElementById("cmd-prompt");
+/**@type {HTMLInputElement} */
+const command_input = document.getElementById("command-input");
+/**@type {HTMLInputElement} */
+const command_confirm = document.getElementById("command-confirmation");
+/**@type {HTMLInputElement} */
+const command_pwd = document.getElementById("command-pwd");
+
+if (isdev) {
+    command_prompt_btn.hidden = false;
+}
+
+function locked_down_send_command () {
+    command_prompt.close();
+    if (!isdev) {
+        return;
+    }
+    const v = command_input.value;
+    command_input.value = "";
+    const x = command_confirm.value;
+    command_confirm.value = "";
+    const p = command_pwd.value;
+    command_pwd.value = "";
+    socket.emit("man-com", v, p, x);
+}
 
 let typing_timer = -1;
 

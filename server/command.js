@@ -2,7 +2,7 @@ import {readFile, truncate} from "fs/promises";
 import UserModel from "./models/user_model.js";
 import bcrypt from "bcryptjs";
 import {logCustomRaw, getDate, logCommand} from "./logger.js";
-import {userExists} from "./routes/account_router.js";
+import {userExists, userIdExists} from "./routes/account_router.js";
 
 async function confirmCommand () {
     let v;
@@ -15,9 +15,12 @@ async function confirmCommand () {
     return v === process.env.CONFIRMVALUE;
 }
 
-async function run_command () {
-    let data = await readFile("command.txt", "utf-8");
-    data = data.split("\n");
+async function run_command (data, confirmv) {
+    let override = false;
+    if (confirmv === process.env.CONFIRMVALUE) {
+        override = true;
+    }
+    data = data === undefined ? (await readFile("command.txt", "utf-8")).split("\n") : data.split(";");
     let lines = [];
     for (let i = 0; i < data.length; i ++) {
         if (data[i] !== "") {
@@ -48,7 +51,7 @@ async function run_command () {
             logCommand("COMMAND - EXISTS - FAILED: no username given");
         }
     } else if (lines[0] === "modify") {
-        if (!await confirmCommand()) {
+        if (!override && !await confirmCommand()) {
             logCommand("COMMAND - MODIFY - FAILED: invalid confirmation value");
             return;
         }
@@ -61,11 +64,11 @@ async function run_command () {
         // process user modifications
         if (lines[1] === "user") {
             // check user exists
-            if (!await userExists(lines[2])) {
-                logCommand(`COMMAND - MODIFY - USER - FAILED: user ${lines[2]} does not exist`);
+            if (!await userIdExists(lines[2])) {
+                logCommand(`COMMAND - MODIFY - USER - FAILED: user id ${lines[2]} does not exist`);
                 return;
             }
-            let user = await UserModel.findOne({username:lines[2]});
+            let user = await UserModel.findById(lines[2]);
             // valid modify - user options
             switch (lines[3]) {
                 case "about":

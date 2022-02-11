@@ -11,6 +11,7 @@
     <script defer src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
     <script>
         const roomId = "<%= roomId %>"
+        const isdev = (JSON.parse(decodeURIComponent(document.cookie.split(";")[0].split("=")[1]))).account_status.match("dev");
     </script>
     <script defer src="../assets/js/room.js"></script>
 </head>
@@ -20,7 +21,7 @@
         <input type="text" id="chat-title" value="<%=roomName%>" spellcheck="false">
     </div>
     <div id="message-container"> 
-        <%- include("messages", {messages: messages, roomId: roomId, roomName: roomName}) %>
+        <%- include("messages", {messages: messages, roomId: roomId, roomName: roomName, isdev:isdev}) %>
     </div>
     <div id="entry-container">
         <input type="file" id="file-upload-hidden"style="display: none;">
@@ -29,7 +30,19 @@
         <input id="entry" type="text" placeholder="send a message to <%= roomName %>">
         <p id="typing-label" class="soft-hide">a</p>
         <input id="to-pres" type="button" value="jump to present" onclick="jump_pres()" style="--a:0;">
+        <input id="show-cmd-prompt" type="button" value="command" onclick="document.getElementById('cmd-prompt').showModal()" hidden>
     </div>
+    <dialog id="cmd-prompt">
+        <input type="text" id="command-input">
+        <br><br>
+        <input type="password" autocomplete="off" id="command-pwd">
+        <br><br>
+        <input type="password" autocomplete="off" id="command-confirmation">
+        <br><br>
+        <input type="button" onclick="locked_down_send_command()" value="send">
+        <br><br>
+        <input type="button" onclick="document.getElementById('cmd-prompt').close()" value="cancel">
+    </dialog>
     <script>
         const ent = document.getElementById("entry");
         const room_name = document.getElementById("chat-title");
