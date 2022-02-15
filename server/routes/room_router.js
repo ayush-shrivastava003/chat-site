@@ -34,7 +34,26 @@ RoomRouter.get('/new', async (req, res) => {
     return res.redirect(`/chats/${newRoom._id}`)
 })
 
+async function get_dev_flag (req) {
+    try {
+        return Boolean((await UserModel.findById(JSON.parse(req.cookies.info).id)).account_status.match("dev"));
+    } catch (err) {
+        return false;
+    }
+}
+
+async function get_sus_flag (req) {
+    try {
+        return Boolean((await UserModel.findById(JSON.parse(req.cookies.info).id)).account_status.match("disabled|locked|suspended|deactivated"));
+    } catch (err) {
+        return true;
+    }
+}
+
 RoomRouter.get('/:room', async (req, res) => {
+    if (await get_sus_flag(req)) {
+        return res.redirect("/account/disabled");
+    }
     let id = req.params.room
     if (mongoose.isValidObjectId(id)) {
         let room = await RoomModel.findById(id).sort({epochTime: 1})
@@ -42,11 +61,14 @@ RoomRouter.get('/:room', async (req, res) => {
 
         room.messages.splice(0, room.messages.length-25)
         let msgs = await getAuthors(room.messages) 
-        res.render('room', {messages: msgs, roomName: room.name, roomId: room._id, isdev: Boolean(JSON.parse(req.cookies.info).account_status.match("dev"))})
+        res.render('room', {messages: msgs, roomName: room.name, roomId: room._id, isdev: (await get_dev_flag(req))})
     } else {return res.render('404')}
 })
 
 RoomRouter.post('/:room/load', async (req, res) => {
+    if (await get_sus_flag(req)) {
+        return res.redirect("/account/disabled");
+    }
     let id = req.params.room
     let {offset, loaded} = req.body
 
@@ -66,7 +88,7 @@ RoomRouter.post('/:room/load', async (req, res) => {
     }
     
     messages = await getAuthors(messages)
-    return res.render("messages", {roomId: id, messages: messages, roomName: room.name})
+    return res.render("messages", {roomId: id, messages: messages, roomName: room.name, isdev: get_dev_flag(req)})
 })
 
 export default RoomRouter

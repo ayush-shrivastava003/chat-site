@@ -49,17 +49,14 @@ AccountRouter.get('/login', (req, res) => {
 })
 
 AccountRouter.post('/register', async (req, res) => {
-    logCustom("register event");
     let {username, password} = req.body
 
     if (await userExists(username)) {
         logCustom("username already exists");
         return res.json({status: "error", error: `The username ${username} is already in use!`})
     }
-    logCustom("exists checkpoint");
 
     if (password.length >= 8) {
-        logCustom("register success");
         let pwd = await bcrypt.hash(password, 10)
         let user = new UserModel({
             username: username,
@@ -68,9 +65,10 @@ AccountRouter.post('/register', async (req, res) => {
         await user.save()
         let token = await jwt.sign({id: user._id}, process.env.JWT_SECRET)
         logCustom(`${req.connection.remoteAddress} REGISTERED the account ${user._id} (${user.username})`)
+        let id = user._id;
         return res.cookie(
             'info', 
-            JSON.stringify({username, token}),
+            JSON.stringify({username, token, id}),
             {maxAge: 60480000}
             ).status(200).json({status: "ok"})
 
@@ -88,9 +86,13 @@ AccountRouter.post('/login', async (req, res) => {
     if (await bcrypt.compare(password, user.password)) {
         let token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
         logCustom(`${req.connection.remoteAddress} LOGGED INTO the account ${user._id} (${user.username})`)
-        let account_status = user.account_status;
-        return res.cookie('info', JSON.stringify({username, token, account_status})).status(200).json({status: 'ok'})
+        let id = user._id;
+        return res.cookie('info', JSON.stringify({username, token, id})).status(200).json({status: 'ok'})
     } else return res.status(400).json({status: 'error', error: 'Invalid username or password'})
 })
+
+AccountRouter.get("/disabled", async (req, res) => {
+    return res.clearCookie("info").render("acc-disabled");
+});
 
 export {AccountRouter, verifyLogin, getToken, userExists, userIdExists}

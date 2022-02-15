@@ -156,6 +156,7 @@ a {color: var(--font-color);}
 
 .content {
     margin-top: 0.5%;
+    word-break : all;
 }
 
 .date {
