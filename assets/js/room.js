@@ -4,14 +4,16 @@ msgContainer.scrollTop = msgContainer.scrollHeight;
 const typingLabel = document.getElementById("typing-label")
 const chatTitle = document.getElementById("chat-title")
 const entry = document.getElementById("entry")
+
+/*
 const command_prompt_btn = document.getElementById("show-cmd-prompt");
-/**@type {HTMLDialogElement} */
+/**@type {HTMLDialogElement} 
 const command_prompt = document.getElementById("cmd-prompt");
-/**@type {HTMLInputElement} */
+/**@type {HTMLInputElement} 
 const command_input = document.getElementById("command-input");
-/**@type {HTMLInputElement} */
+/**@type {HTMLInputElement} 
 const command_confirm = document.getElementById("command-confirmation");
-/**@type {HTMLInputElement} */
+/**@type {HTMLInputElement} 
 const command_pwd = document.getElementById("command-pwd");
 
 if (isdev) {
@@ -31,6 +33,7 @@ function locked_down_send_command () {
     command_pwd.value = "";
     socket.emit("man-com", v, p, x);
 }
+*/
 
 let typing_timer = -1;
 
@@ -70,11 +73,11 @@ function getUsersTyping(author, usersTyping) {
     if (usersTyping.length == 1) {
         authors = `${usersTyping[0]} is typing...`
     } else if (usersTyping.length == 0) {
-        authors = ""
+        authors = "&#8203"
     } else {
         authors = usersTyping.join(", ") + " are typing..."
     }
-    return authors === "" ? "a" : authors;
+    return authors;
 }
 
 function append(content, author) {
@@ -163,8 +166,8 @@ socket.on("typing", (authorsTyping) => {
 
 socket.on("stop typing", (usersTyping) => {
     const v = getUsersTyping(getUser(), usersTyping);
-    typingLabel.textContent = v;
-    typingLabel.className = v === "a" ? "soft-hide" : "";
+    typingLabel.innerText = v;
+    typingLabel.className = v === "&#8203" ? "soft-hide" : "";
 })
 
 socket.on("room change", (name) => {

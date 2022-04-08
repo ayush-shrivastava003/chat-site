@@ -3,8 +3,8 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import path from 'path'
-import {logReq, logCustom, logErr, getDate, logMsg, logConnect, miscLog} from './logger.js'
-import {run_command} from "./command.js"
+import * as logger from './logger.js'
+// import {run_command} from "./command.js"
 import RoomModel from './models/room_model.js'
 import http from 'http'
 import {Server} from 'socket.io'
@@ -24,12 +24,12 @@ mongoose.connect(
     },
     async (err) => {
         if (err) {
-            logErr(err.message)
+            logger.logErr(err.message)
             throw err
         }
 
         console.log(`Connected to DB: ${process.env.DB}.`)
-        logCustom(`Connected to DB: ${process.env.DB}.`)
+        logger.logCustom(`Connected to DB: ${process.env.DB}.`)
     }
 )
 
@@ -44,16 +44,16 @@ server.set('view engine', 'ejs')
 server.use('/assets', express.static(path.resolve(__dirname + '../../assets')))
 server.use(cookieParser())
 server.use(express.json())
-server.use(logReq)
+server.use(logger.logReq)
 
 socket.on("connection", (socket) => {
     let path = socket.handshake.headers.referer.split("/chats/")[1]
     socket.join(path)
-    logConnect(`accepted connection from ${socket.handshake.address}`)
+    logger.logConnect(`accepted connection from ${socket.handshake.address}`)
     
     socket.on("disconnect", () => {
         socket.leave(path)
-        logConnect(`lost connection from ${socket.handshake.address}`)
+        logger.logConnect(`lost connection from ${socket.handshake.address}`)
     })
 
     socket.on("message", async (msg) => {
@@ -68,7 +68,7 @@ socket.on("connection", (socket) => {
         room.messages.push(data);
         await room.save()
         const usrname = await UserModel.findById(data.author);
-        logMsg({author: data.author, date: data.date, roomId: msg.roomId, usrname:usrname.username, roomname:room.name});
+        logger.logMsg({author: data.author, date: data.date, roomId: msg.roomId, usrname:usrname.username, roomname:room.name});
 
         socket.to(path).emit("new", msg)
     })
@@ -94,7 +94,7 @@ socket.on("connection", (socket) => {
         await room.save()
         socket.to(path).emit("room change", name)
     })
-
+/*
     socket.on("dump", async () => {
         let things = await UserModel.find({username:{$exists:true}});
         miscLog(...things);
@@ -110,7 +110,9 @@ socket.on("connection", (socket) => {
             run_command(data, confirmv);
         }
     });
+*/
 })
+
 
 server.get('/', async (req, res) => {
     let isLoggedIn = req.cookies.info == undefined ? false : true
@@ -127,5 +129,5 @@ server.get("*", async (req, res) => {
 
 HTTPServer.listen(process.env.PORT, ()=> {
     console.log("Started HTTP server. Port:", process.env.PORT)
-    logCustom("Started HTTP server. Port: " + process.env.PORT)
+    logger.logCustom("Started HTTP server. Port: " + process.env.PORT)
 })

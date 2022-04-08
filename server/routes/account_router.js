@@ -48,6 +48,10 @@ AccountRouter.get('/login', (req, res) => {
     res.render('login')
 })
 
+AccountRouter.get('/logout', (req, res) => {
+    return res.clearCookie('info').redirect('/')
+})
+
 AccountRouter.post('/register', async (req, res) => {
     let {username, password} = req.body
 

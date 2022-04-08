@@ -30,14 +30,14 @@
     </div>
     <div id="entry-container">
         <input type="file" id="file-upload-hidden"style="display: none;">
-        <input type="image" id="file-upload" src="../assets/images/attach-file.svg" width="30" height="30">
-        <!-- <button id="file-upload">+</button> -->
+        <!-- <input type="image" id="file-upload" src="../assets/images/attach-file.svg" width="30" height="30"> -->
+        <button id="file-upload">+</button>
         <input id="entry" type="text" placeholder="send a message to <%= roomName %>">
         <p id="typing-label" class="soft-hide">a</p>
         <input id="to-pres" type="button" value="jump to present" onclick="jump_pres()" style="--a:0;">
-        <input id="show-cmd-prompt" type="button" value="command" onclick="document.getElementById('cmd-prompt').showModal()" hidden>
+        <!-- <input id="show-cmd-prompt" type="button" value="command" onclick="document.getElementById('cmd-prompt').showModal()" hidden> -->
     </div>
-    <dialog id="cmd-prompt">
+    <!-- <dialog id="cmd-prompt">
         <input type="text" id="command-input">
         <br><br>
         <input type="password" autocomplete="off" id="command-pwd">
@@ -47,7 +47,7 @@
         <input type="button" onclick="locked_down_send_command()" value="send">
         <br><br>
         <input type="button" onclick="document.getElementById('cmd-prompt').close()" value="cancel">
-    </dialog>
+    </dialog> -->
     <script>
         const ent = document.getElementById("entry");
         const room_name = document.getElementById("chat-title");
